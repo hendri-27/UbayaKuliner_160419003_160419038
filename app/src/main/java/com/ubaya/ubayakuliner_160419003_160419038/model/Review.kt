@@ -15,6 +15,12 @@ import androidx.room.*
             parentColumns = ["id"],
             childColumns = ["transaction_id"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Transaction::class,
+            parentColumns = ["id"],
+            childColumns = ["user_id"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
@@ -25,6 +31,8 @@ data class Review(
     val restaurantId:Int,
     @ColumnInfo(name = "transaction_id")
     val transactionId:Int,
+    @ColumnInfo(name = "user_id")
+    val userId:Int,
     var rating:Float,
     var message:String,
     var date:String
