@@ -5,12 +5,9 @@ import androidx.room.Query
 
 @Dao
 interface FoodDao {
-    @Query("SELECT * FROM food")
-    suspend fun selectAll():List<Food>
+    @Query("SELECT * FROM food WHERE restaurant_id = :restoId")
+    suspend fun selectAll(restoId: Int):List<Food>
 
     @Query("SELECT * FROM food WHERE id= :id")
     suspend fun select(id:Int):Food
-
-    @Query("UPDATE food SET name = :name, price = :price, photo_url = :photo_url WHERE id = :id")
-    suspend fun update(id:Int,name:String,stock:Int,price:Int, photo_url:String)
 }

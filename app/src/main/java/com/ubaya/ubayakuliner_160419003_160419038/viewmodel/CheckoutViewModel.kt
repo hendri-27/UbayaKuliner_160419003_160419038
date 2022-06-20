@@ -11,65 +11,41 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.ubaya.ubayakuliner_160419003_160419038.model.Restaurant
 import com.ubaya.ubayakuliner_160419003_160419038.model.User
+import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
+import com.ubaya.ubayakuliner_160419003_160419038.util.userId
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class CheckoutViewModel(application: Application) : AndroidViewModel(application) {
+class CheckoutViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
     val UserLiveData = MutableLiveData<User>()
     val UserLoadErrorLiveData = MutableLiveData<Boolean>()
     val UserLoadingLiveData = MutableLiveData<Boolean>()
     val RestaurantLiveData = MutableLiveData<Restaurant>()
     val RestaurantLoadErrorLiveData = MutableLiveData<Boolean>()
     val RestaurantLoadingLiveData = MutableLiveData<Boolean>()
-    val TAG = "volleyTag"
-    private var queue: RequestQueue? = null
+    private var job = Job()
 
-    fun fetch(userId: String, restoId:String) {
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    fun fetchUser() {
         UserLoadErrorLiveData.value = false
         UserLoadingLiveData.value = true
-        RestaurantLoadErrorLiveData.value = false
-        RestaurantLoadingLiveData.value = true
-
-        queue = Volley.newRequestQueue(getApplication())
-        val url = "https://ubayakuliner.herokuapp.com/users/$userId"
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            {
-                val result = Gson().fromJson(it, User::class.java)
-                UserLiveData.value = result
-                UserLoadingLiveData.value = false
-                Log.d("showvolley", it)
-            },
-            {
-                UserLoadingLiveData.value = false
-                UserLoadErrorLiveData.value = true
-                Log.d("errorvolley", it.toString())
-            }
-        ).apply {
-            tag = "TAG"
+        launch {
+            val db = buildDb(getApplication())
+            UserLiveData.value = db.userDao().select(userId)
         }
-        queue?.add(stringRequest)
-
-        val url2 = "https://ubayakuliner.herokuapp.com/restaurants/$restoId"
-        val stringRequest2 = StringRequest(
-            Request.Method.GET, url2,
-            {
-                val result = Gson().fromJson(it, Restaurant::class.java)
-                RestaurantLiveData.value = result
-                RestaurantLoadingLiveData.value = false
-                Log.d("showvolley", it)
-            },
-            {
-                RestaurantLoadingLiveData.value = false
-                RestaurantLoadErrorLiveData.value = true
-                Log.d("errorvolley", it.toString())
-            }
-        ).apply {
-            tag = "TAG"
-        }
-        queue?.add(stringRequest2)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        queue?.cancelAll(TAG)
+    fun fetchRestaurant(resto_id: Int) {
+        RestaurantLoadErrorLiveData.value = false
+        RestaurantLoadingLiveData.value = true
+        launch {
+            val db = buildDb(getApplication())
+            RestaurantLiveData.value = db.restaurantDao().select(resto_id)
+        }
     }
 }

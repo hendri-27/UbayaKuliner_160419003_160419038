@@ -11,43 +11,30 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ubaya.ubayakuliner_160419003_160419038.model.DetailTransaction
+import com.ubaya.ubayakuliner_160419003_160419038.model.DetailTransactionWithFood
 import com.ubaya.ubayakuliner_160419003_160419038.model.Transaction
+import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class DetailTransactionViewModel(application: Application) : AndroidViewModel(application)  {
-    val detailTransactionLiveData = MutableLiveData<ArrayList<DetailTransaction>>()
+class DetailTransactionViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
+    val detailTransactionLiveData = MutableLiveData<List<DetailTransactionWithFood>>()
     val detailTransactionLoadErrorLiveData = MutableLiveData<Boolean>()
     val detailTransactionLoadingLiveData = MutableLiveData<Boolean>()
-    val TAG = "volleyTag"
-    private var queue: RequestQueue? = null
+    private var job = Job()
 
-    fun fetch(transaction: Transaction){
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    fun fetch(transactionId:Int) {
         detailTransactionLoadErrorLiveData.value = false
         detailTransactionLoadingLiveData.value = true
-
-        queue = Volley.newRequestQueue(getApplication())
-        val url = "https://ubayakuliner.herokuapp.com/detail_transactions?transaction_historyId=${transaction.id}&_expand=food"
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            {
-                val sType = object : TypeToken<ArrayList<DetailTransaction>>() {}.type
-                val result = Gson().fromJson<ArrayList<DetailTransaction>>(it,sType)
-                detailTransactionLiveData.value = result
-                detailTransactionLoadingLiveData.value = false
-                Log.d("showvolley",it)
-            },
-            {
-                detailTransactionLoadingLiveData.value = false
-                detailTransactionLoadErrorLiveData.value = true
-                Log.d("errorvolley",it.toString())
-            }
-        ).apply {
-            tag = "TAG"
+        launch {
+            val db = buildDb(getApplication())
+            detailTransactionLiveData.value = db.detailTransactionDao().select(transactionId)
         }
-        queue?.add(stringRequest)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        queue?.cancelAll(TAG)
     }
 }

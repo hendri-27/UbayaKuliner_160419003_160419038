@@ -5,7 +5,7 @@ import androidx.room.*
 @Dao
 interface CartDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg cart: Cart)
+    suspend fun insert(cart: Cart)
 
     @Query("SELECT food.id, food.restaurant_id, food.name, food.price, food.photo_url, " +
             "cart.quantity FROM cart INNER JOIN food ON cart.food_id = food.id WHERE user_id= :user_id")
