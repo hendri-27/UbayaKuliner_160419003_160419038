@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface ReviewDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg review:Review)
+    suspend fun insert(review:Review)
 
     @Query("SELECT * FROM review where restaurant_id = :idResto")
     suspend fun select(idResto:Int):List<Review>

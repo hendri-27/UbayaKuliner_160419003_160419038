@@ -11,42 +11,29 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ubaya.ubayakuliner_160419003_160419038.model.Transaction
+import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class ListTransactionViewModel(application: Application) : AndroidViewModel(application)  {
-    val transactionLiveData = MutableLiveData<ArrayList<Transaction>>()
+class ListTransactionViewModel(application: Application) : AndroidViewModel(application),
+    CoroutineScope {
+    val transactionLiveData = MutableLiveData<List<Transaction>>()
     val transactionLoadErrorLiveData = MutableLiveData<Boolean>()
     val transactionloadingLiveData = MutableLiveData<Boolean>()
-    val TAG = "volleyTag"
-    private var queue: RequestQueue? = null
 
-    fun refresh(id:String) {
+    private var job = Job()
+    override val coroutineContext: CoroutineContext get() = job + Dispatchers.Main
+
+    fun refresh(id:Int) {
         transactionLoadErrorLiveData.value = false
         transactionloadingLiveData.value = true
 
-        queue = Volley.newRequestQueue(getApplication())
-        val url = "https://ubayakuliner.herokuapp.com/transaction_histories?userId=$id&_sort=date&_order=desc&_expand=user&_expand=restaurant"
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            {
-                val sType = object : TypeToken<ArrayList<Transaction>>() {}.type
-                val result = Gson().fromJson<ArrayList<Transaction>>(it,sType)
-                transactionLiveData.value = result
-                transactionloadingLiveData.value = false
-                Log.d("showvolley",it)
-            },
-            {
-                transactionloadingLiveData.value = false
-                transactionLoadErrorLiveData.value = true
-                Log.d("errorvolley",it.toString())
-            }
-        ).apply {
-            tag = "TAG"
+        launch {
+            val db = buildDb(getApplication())
+            transactionLiveData.value = db.transactionDao().select(id)
         }
-        queue?.add(stringRequest)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        queue?.cancelAll(TAG)
     }
 }
