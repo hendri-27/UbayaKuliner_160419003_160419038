@@ -11,18 +11,33 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ubaya.ubayakuliner_160419003_160419038.model.Cart
+import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
+import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
+import com.ubaya.ubayakuliner_160419003_160419038.util.userId
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class ListCartViewModel(application: Application) : AndroidViewModel(application)  {
-    val cartLiveData = MutableLiveData<ArrayList<Cart>>()
+class ListCartViewModel(application: Application) : AndroidViewModel(application), CoroutineScope  {
+    val cartLiveData = MutableLiveData<List<CartWithFood>>()
     val cartLoadErrorLiveData = MutableLiveData<Boolean>()
     val cartLoadingLiveData = MutableLiveData<Boolean>()
     val TAG = "volleyTag"
     private var queue: RequestQueue? = null
+    private var job = Job()
 
-    fun refresh(id:String) {
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    fun refresh() {
         cartLoadErrorLiveData.value = false
         cartLoadingLiveData.value = true
-
+        launch { // Menjalankannya di thread coroutine
+            val db = buildDb(getApplication())
+            cartLiveData.value = db.cartDao().select(userId)
+        }
         queue = Volley.newRequestQueue(getApplication())
         val url = "https://ubayakuliner.herokuapp.com/carts?userId=$id&_expand=restaurant&_expand=food"
         val stringRequest = StringRequest(
