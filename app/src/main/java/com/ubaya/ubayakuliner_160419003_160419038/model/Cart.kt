@@ -1,14 +1,19 @@
 package com.ubaya.ubayakuliner_160419003_160419038.model
 
-import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import androidx.room.*
 
-@Parcelize
+@Entity
 data class Cart (
-    val userId:Int,
-    var restaurantId:Int,
-    var food:Food,
-    @SerializedName("qty")
+    @Relation(
+        parentColumn = "userId",
+        entityColumn = "id"
+    )
+    val user:User,
+    @Relation(
+        parentColumn = "foodId",
+        entityColumn = "id"
+    )
+    val food:Food,
+    @ColumnInfo(name = "qty")
     var cartQty:Int
-):Parcelable
+)
