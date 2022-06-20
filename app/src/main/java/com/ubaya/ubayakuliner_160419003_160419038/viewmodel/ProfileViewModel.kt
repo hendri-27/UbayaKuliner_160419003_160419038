@@ -10,41 +10,40 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.ubaya.ubayakuliner_160419003_160419038.model.User
+import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class ProfileViewModel(application: Application) : AndroidViewModel(application)  {
+class ProfileViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
     val profileLiveData = MutableLiveData<User>()
     val profileLoadErrorLiveData = MutableLiveData<Boolean>()
     val profileLoadingLiveData = MutableLiveData<Boolean>()
-    val TAG = "volleyTag"
-    private var queue: RequestQueue? = null
+    private var job = Job()
+    override val coroutineContext: CoroutineContext get() = job + Dispatchers.Main
 
-    fun fetch(id:String){
+    fun fetch(id:Int){
         profileLoadErrorLiveData.value = false
         profileLoadingLiveData.value = true
 
-        queue = Volley.newRequestQueue(getApplication())
-        val url = "https://ubayakuliner.herokuapp.com/users/$id"
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            {
-                val result = Gson().fromJson(it,User::class.java)
-                profileLiveData.value = result
-                profileLoadingLiveData.value = false
-                Log.d("showvolley",it)
-            },
-            {
-                profileLoadingLiveData.value = false
-                profileLoadErrorLiveData.value = true
-                Log.d("errorvolley",it.toString())
-            }
-        ).apply {
-            tag = "TAG"
+        launch {
+            val db = buildDb(getApplication())
+            profileLiveData.value = db.userDao().select(id)
         }
-        queue?.add(stringRequest)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        queue?.cancelAll(TAG)
+    fun update(id:Int,name:String,gender:String,birthDate:String,phoneNumber:String,email:String,password:String){
+        profileLoadErrorLiveData.value = false
+        profileLoadingLiveData.value = true
+
+        launch {
+            val db = buildDb(getApplication())
+
+            db.userDao().update(id,name,gender,birthDate,phoneNumber,email,password)
+
+            profileLiveData.value = db.userDao().select(id)
+        }
     }
 }

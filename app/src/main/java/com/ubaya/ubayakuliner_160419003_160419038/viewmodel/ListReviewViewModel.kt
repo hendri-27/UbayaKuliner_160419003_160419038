@@ -11,42 +11,38 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ubaya.ubayakuliner_160419003_160419038.model.Review
+import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class ListReviewViewModel(application: Application) : AndroidViewModel(application)  {
-    val reviewLiveData = MutableLiveData<ArrayList<Review>>()
+class ListReviewViewModel(application: Application) : AndroidViewModel(application),
+    CoroutineScope {
+    val reviewLiveData = MutableLiveData<List<Review>>()
     val reviewLoadErrorLiveData = MutableLiveData<Boolean>()
     val reviewloadingLiveData = MutableLiveData<Boolean>()
-    val TAG = "volleyTag"
-    private var queue: RequestQueue? = null
 
-    fun refresh(id:String) {
+    private var job = Job()
+    override val coroutineContext: CoroutineContext get() = job + Dispatchers.Main
+
+    fun refresh(id:Int) {
         reviewLoadErrorLiveData.value = false
         reviewloadingLiveData.value = true
 
-        queue = Volley.newRequestQueue(getApplication())
-        val url = "https://ubayakuliner.herokuapp.com/reviews?restaurantId=$id&_expand=user"
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            {
-                val sType = object : TypeToken<ArrayList<Review>>() {}.type
-                val result = Gson().fromJson<ArrayList<Review>>(it,sType)
-                reviewLiveData.value = result
-                reviewloadingLiveData.value = false
-                Log.d("showvolley",it)
-            },
-            {
-                reviewloadingLiveData.value = false
-                reviewLoadErrorLiveData.value = true
-                Log.d("errorvolley",it.toString())
-            }
-        ).apply {
-            tag = "TAG"
+        launch {
+            val db = buildDb(getApplication())
+            reviewLiveData.value = db.reviewDao().select(id)
         }
-        queue?.add(stringRequest)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        queue?.cancelAll(TAG)
+    fun insert(review:Review){
+        launch {
+            val db = buildDb(getApplication())
+            db.reviewDao().insert(review)
+
+            db.restaurantDao().update(review.restaurantId, review.rating)
+        }
     }
 }
