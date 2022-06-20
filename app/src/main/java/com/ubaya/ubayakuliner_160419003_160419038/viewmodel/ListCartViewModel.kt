@@ -24,8 +24,6 @@ class ListCartViewModel(application: Application) : AndroidViewModel(application
     val cartLiveData = MutableLiveData<List<CartWithFood>>()
     val cartLoadErrorLiveData = MutableLiveData<Boolean>()
     val cartLoadingLiveData = MutableLiveData<Boolean>()
-    val TAG = "volleyTag"
-    private var queue: RequestQueue? = null
     private var job = Job()
 
     override val coroutineContext: CoroutineContext
@@ -38,30 +36,23 @@ class ListCartViewModel(application: Application) : AndroidViewModel(application
             val db = buildDb(getApplication())
             cartLiveData.value = db.cartDao().select(userId)
         }
-        queue = Volley.newRequestQueue(getApplication())
-        val url = "https://ubayakuliner.herokuapp.com/carts?userId=$id&_expand=restaurant&_expand=food"
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            {
-                val sType = object : TypeToken<ArrayList<Cart>>() {}.type
-                val result = Gson().fromJson<ArrayList<Cart>>(it,sType)
-                cartLiveData.value = result
-                cartLoadingLiveData.value = false
-                Log.d("showvolley",it)
-            },
-            {
-                cartLoadingLiveData.value = false
-                cartLoadErrorLiveData.value = true
-                Log.d("errorvolley",it.toString())
-            }
-        ).apply {
-            tag = "TAG"
-        }
-        queue?.add(stringRequest)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        queue?.cancelAll(TAG)
+    fun update(food_id: Int, quantity: Int) {
+        launch {
+            val db = buildDb(getApplication())
+            db.cartDao().update(userId, food_id, quantity)
+
+            cartLiveData.value = db.cartDao().select(userId)
+        }
+    }
+
+    fun delete(cart: Cart) {
+        launch {
+            val db = buildDb(getApplication())
+            db.cartDao().delete(cart)
+
+            cartLiveData.value = db.cartDao().select(userId)
+        }
     }
 }

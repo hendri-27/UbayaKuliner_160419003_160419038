@@ -10,43 +10,38 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.ubaya.ubayakuliner_160419003_160419038.model.Cart
 import com.ubaya.ubayakuliner_160419003_160419038.model.Food
+import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
+import com.ubaya.ubayakuliner_160419003_160419038.util.userId
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class DetailRestaurantViewModel(application: Application) : AndroidViewModel(application)  {
-    val foodLiveData = MutableLiveData<ArrayList<Food>>()
+class DetailRestaurantViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
+    val foodLiveData = MutableLiveData<List<Food>>()
     val foodLoadErrorLiveData = MutableLiveData<Boolean>()
     val foodLoadingLiveData = MutableLiveData<Boolean>()
-    val TAG = "volleyTag"
-    private var queue: RequestQueue? = null
+    private var job = Job()
 
-    fun fetch(id:String){
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    fun fetch(restoId:Int) {
         foodLoadErrorLiveData.value = false
         foodLoadingLiveData.value = true
-
-        queue = Volley.newRequestQueue(getApplication())
-        val url = "https://ubayakuliner.herokuapp.com/foods?restaurantId=$id"
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            {
-                val sType = object : TypeToken<ArrayList<Food>>() {}.type
-                val result = Gson().fromJson<ArrayList<Food>>(it,sType)
-                foodLiveData.value = result
-                foodLoadingLiveData.value = false
-                Log.d("showvolley",it)
-            },
-            {
-                foodLoadingLiveData.value = false
-                foodLoadErrorLiveData.value = true
-                Log.d("errorvolley",it.toString())
-            }
-        ).apply {
-            tag = "TAG"
+        launch {
+            val db = buildDb(getApplication())
+            foodLiveData.value = db.foodDao().selectAll(restoId)
         }
-        queue?.add(stringRequest)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        queue?.cancelAll(TAG)
+    fun insertCart(cart: Cart) {
+        launch {
+            val db = buildDb(getApplication())
+            db.cartDao().insert(cart)
+        }
     }
 }
