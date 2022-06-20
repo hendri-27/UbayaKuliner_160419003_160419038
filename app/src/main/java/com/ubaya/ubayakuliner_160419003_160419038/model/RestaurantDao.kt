@@ -1,7 +1,9 @@
 package com.ubaya.ubayakuliner_160419003_160419038.model
 
+import androidx.room.Dao
 import androidx.room.Query
 
+@Dao
 interface RestaurantDao {
     @Query("SELECT * FROM restaurant")
     suspend fun selectAll():List<Restaurant>

@@ -1,7 +1,9 @@
 package com.ubaya.ubayakuliner_160419003_160419038.model
 
+import androidx.room.Dao
 import androidx.room.Query
 
+@Dao
 interface UserDao {
     @Query("SELECT * FROM user WHERE id= :id")
     suspend fun select(id:Int):User
