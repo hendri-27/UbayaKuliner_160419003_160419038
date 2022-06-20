@@ -11,7 +11,9 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ubaya.ubayakuliner_160419003_160419038.model.Review
+import com.ubaya.ubayakuliner_160419003_160419038.model.User
 import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
+import com.ubaya.ubayakuliner_160419003_160419038.util.userId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,17 +25,23 @@ class ListReviewViewModel(application: Application) : AndroidViewModel(applicati
     val reviewLiveData = MutableLiveData<List<Review>>()
     val reviewLoadErrorLiveData = MutableLiveData<Boolean>()
     val reviewloadingLiveData = MutableLiveData<Boolean>()
+    val userLiveData = MutableLiveData<User>()
+    val userLoadErrorLiveData = MutableLiveData<Boolean>()
+    val userloadingLiveData = MutableLiveData<Boolean>()
 
     private var job = Job()
     override val coroutineContext: CoroutineContext get() = job + Dispatchers.Main
 
-    fun refresh(id:Int) {
+    fun refresh(restoId:Int) {
         reviewLoadErrorLiveData.value = false
         reviewloadingLiveData.value = true
+        userLoadErrorLiveData.value = false
+        userloadingLiveData.value = true
 
         launch {
             val db = buildDb(getApplication())
-            reviewLiveData.value = db.reviewDao().select(id)
+            reviewLiveData.value = db.reviewDao().select(restoId)
+            userLiveData.value = db.userDao().select(userId)
         }
     }
 

@@ -38,5 +38,5 @@ data class Transaction(
     @ColumnInfo(name = "grand_total")
     var grandTotal:Int,
     var status:String,
-    var rate:String?
+    var rate:Float?
 )
