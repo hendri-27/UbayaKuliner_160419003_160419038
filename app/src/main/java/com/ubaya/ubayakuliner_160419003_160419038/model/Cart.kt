@@ -26,7 +26,8 @@ data class Cart (
 )
 
 data class CartWithFood(
-    val food:List<Food>,
+    @Embedded
+    val food:Food,
     val qty:Int
 )
 
