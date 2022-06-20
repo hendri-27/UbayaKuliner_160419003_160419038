@@ -1,18 +1,22 @@
 package com.ubaya.ubayakuliner_160419003_160419038.model
 
-import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Parcelize
+
+@Entity
 data class Restaurant(
+    @PrimaryKey(autoGenerate = true)
     val id:Int,
+    @ColumnInfo(name = "name")
     var name:String,
+    @ColumnInfo(name = "address")
     var address:String,
-    @SerializedName("phone_number")
+    @ColumnInfo(name = "phone_number")
     var phoneNumber:String,
-    @SerializedName("photo_url")
+    @ColumnInfo(name = "photo_url")
     var photoURL:String?,
-    @SerializedName("rating_total")
+    @ColumnInfo(name = "rating_total")
     var ratingTotal:Float?
-):Parcelable
+)

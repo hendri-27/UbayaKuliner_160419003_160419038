@@ -1,21 +1,27 @@
 package com.ubaya.ubayakuliner_160419003_160419038.model
 
-import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Parcelize
+@Entity
 data class User(
+    @PrimaryKey(autoGenerate = true)
     val id:Int,
+    @ColumnInfo(name = "username")
     var username:String,
+    @ColumnInfo(name = "name")
     var name:String,
+    @ColumnInfo(name = "gender")
     var gender:String,
-    @SerializedName("birth_date")
+    @ColumnInfo(name = "birth_date")
     var birthDate:String,
-    @SerializedName("phone_number")
+    @ColumnInfo(name = "phone_number")
     var phoneNumber:String,
+    @ColumnInfo(name = "email")
     var email:String,
+    @ColumnInfo(name = "password")
     var password:String,
-    @SerializedName("photo_url")
+    @ColumnInfo(name = "photo_url")
     var photoURL:String?
-):Parcelable
+)

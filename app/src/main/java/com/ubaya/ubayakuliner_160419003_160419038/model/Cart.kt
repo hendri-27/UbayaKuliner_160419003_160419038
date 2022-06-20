@@ -4,16 +4,15 @@ import androidx.room.*
 
 @Entity
 data class Cart (
-    @Relation(
-        parentColumn = "userId",
-        entityColumn = "id"
-    )
+    @Embedded
     val user:User,
     @Relation(
-        parentColumn = "foodId",
-        entityColumn = "id"
+        parentColumn = "userId",
+        entityColumn = "foodId",
+        associateBy = Junction(UserFoodCrossRef::class)
     )
+    @Embedded
     val food:Food,
-    @ColumnInfo(name = "qty")
-    var cartQty:Int
+    @ColumnInfo(name = "quantity")
+    var qty:Int
 )

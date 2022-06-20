@@ -1,26 +1,36 @@
 package com.ubaya.ubayakuliner_160419003_160419038.model
 
-import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import androidx.room.*
 
-@Parcelize
+@Entity
 data class Transaction(
+    @PrimaryKey(autoGenerate = true)
     val id:String,
+    @Embedded
     var user:User,
+    @Relation(
+        parentColumn = "userId",
+        entityColumn = "restaurantId",
+        associateBy = Junction(RestaurantUserCrossRef::class)
+    )
+    @Embedded
     var restaurant:Restaurant,
+    @ColumnInfo(name = "date")
     var date:String,
+    @ColumnInfo(name = "location")
     var location:String,
-    @SerializedName("payment_method")
-    var paymentMethod:String,
-    @SerializedName("delivery_fee")
+//    @SerializedName("payment_method")
+//    var paymentMethod:String,
+    @ColumnInfo(name = "delivery_fee")
     var deliveryFee:Int,
-    @SerializedName("service_fee")
+    @ColumnInfo(name = "service_fee")
     var serviceFee:Int,
-    @SerializedName("food_subtotal")
+    @ColumnInfo(name = "food_subtotal")
     var foodSubtotal:Int,
-    @SerializedName("grand_total")
+    @ColumnInfo(name = "grand_total")
     var grandTotal:Int,
+    @ColumnInfo(name = "status")
     var status:String,
+    @ColumnInfo(name = "rate")
     var rate:String?
-):Parcelable
+)
