@@ -22,8 +22,6 @@ data class Food(
     val restaurantId:String,
     @ColumnInfo(name = "name")
     var name:String,
-    @ColumnInfo(name = "stock")
-    var stock:Int,
     @ColumnInfo(name = "price")
     var price:Int,
     @ColumnInfo(name = "photo_url")
