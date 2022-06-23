@@ -14,5 +14,9 @@ interface TransactionDao {
     suspend fun select(user_id: Int): List<Transaction>
 
     @Query("SELECT * FROM `transaction` WHERE id = :transaction_id")
-    suspend fun selectByTransaction(transaction_id: Int): List<Transaction>
+    suspend fun selectByTransaction(transaction_id: Int): Transaction
+
+    @Query("SELECT `transaction`.*, restaurant.* FROM `transaction` INNER JOIN restaurant ON " +
+            "`transaction`.restaurant_id = restaurant.id WHERE `transaction`.id = :transaction_id")
+    suspend fun selectTransactionWithRestaurant(transaction_id: Int): TransactionWithRestaurant
 }

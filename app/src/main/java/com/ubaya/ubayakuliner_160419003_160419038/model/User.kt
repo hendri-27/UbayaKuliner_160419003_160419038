@@ -6,8 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class User(
-    @PrimaryKey(autoGenerate = true)
-    val id:Int,
     @ColumnInfo(name = "username")
     var username:String,
     @ColumnInfo(name = "name")
@@ -23,5 +21,7 @@ data class User(
     @ColumnInfo(name = "password")
     var password:String,
     @ColumnInfo(name = "photo_url")
-    var photoURL:String?
+    var photoURL:String?,
+    @PrimaryKey(autoGenerate = true)
+    val id:Int = 0
 )

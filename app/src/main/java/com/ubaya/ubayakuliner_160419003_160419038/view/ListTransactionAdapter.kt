@@ -44,7 +44,7 @@ class ListTransactionAdapter(val listTransaction:ArrayList<Transaction>) : Recyc
                 buttonRate.text = "Rated"
             }else {
                 buttonRate.setOnClickListener {
-                    val action = ListTransactionFragmentDirections.actionAddReviewFragment(transaction)
+                    val action = ListTransactionFragmentDirections.actionAddReviewFragment(transaction.id)
                     Navigation.findNavController(it).navigate(action)
                 }
             }

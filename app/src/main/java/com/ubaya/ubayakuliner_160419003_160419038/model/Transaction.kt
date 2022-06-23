@@ -19,8 +19,6 @@ import androidx.room.*
     ]
 )
 data class Transaction(
-    @PrimaryKey(autoGenerate = true)
-    val id:Int,
     @ColumnInfo(name = "user_id")
     val userId:Int,
     @ColumnInfo(name = "restaurant_id")
@@ -38,5 +36,14 @@ data class Transaction(
     @ColumnInfo(name = "grand_total")
     var grandTotal:Int,
     var status:String,
-    var rate:Float?
+    var rate:Float?,
+    @PrimaryKey(autoGenerate = true)
+    val id:Int = 0
+)
+
+data class TransactionWithRestaurant(
+    @Embedded
+    val transaction: Transaction,
+    @Embedded
+    val restaurant: Restaurant
 )

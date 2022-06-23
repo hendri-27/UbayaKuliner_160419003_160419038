@@ -7,8 +7,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Restaurant(
-    @PrimaryKey(autoGenerate = true)
-    val id:Int,
     @ColumnInfo(name = "name")
     var name:String,
     @ColumnInfo(name = "address")
@@ -18,5 +16,7 @@ data class Restaurant(
     @ColumnInfo(name = "photo_url")
     var photoURL:String?,
     @ColumnInfo(name = "rating_total")
-    var ratingTotal:Float?
+    var ratingTotal:Float?,
+    @PrimaryKey(autoGenerate = true)
+    val id:Int = 0
 )

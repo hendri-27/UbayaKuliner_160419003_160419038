@@ -100,7 +100,7 @@
         android:label="Rate Food"
         tools:layout="@layout/fragment_add_review" >
         <argument
-            android:name="transaction"
-            app:argType="com.ubaya.ubayakuliner_160419003_160419038.model.Transaction" />
+            android:name="transactionId"
+            app:argType="integer" />
     </fragment>
 </navigation>

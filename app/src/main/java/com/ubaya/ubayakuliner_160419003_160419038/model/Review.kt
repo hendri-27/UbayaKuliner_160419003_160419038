@@ -25,8 +25,6 @@ import androidx.room.*
     ]
 )
 data class Review(
-    @PrimaryKey(autoGenerate = true)
-    val id:Int,
     @ColumnInfo(name = "restaurant_id")
     val restaurantId:Int,
     @ColumnInfo(name = "transaction_id")
@@ -35,5 +33,7 @@ data class Review(
     val userId:Int,
     var rating:Float,
     var message:String,
-    var date:String
+    var date:String,
+    @PrimaryKey(autoGenerate = true)
+    val id:Int = 0
 )

@@ -16,14 +16,14 @@ import androidx.room.PrimaryKey
     )]
 )
 data class Food(
-    @PrimaryKey(autoGenerate = true)
-    val id:Int,
     @ColumnInfo(name = "restaurant_id")
-    val restaurantId:String,
+    val restaurantId:Int,
     @ColumnInfo(name = "name")
     var name:String,
     @ColumnInfo(name = "price")
     var price:Int,
     @ColumnInfo(name = "photo_url")
-    var photoURL:String?
+    var photoURL:String?,
+    @PrimaryKey(autoGenerate = true)
+    val id:Int = 0
 )
