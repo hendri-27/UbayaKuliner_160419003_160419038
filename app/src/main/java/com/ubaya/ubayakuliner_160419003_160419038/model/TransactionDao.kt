@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg transaction: Transaction)
+    suspend fun insert(transaction: Transaction)
 
     @Query("SELECT `transaction`.*, restaurant.* FROM `transaction` INNER JOIN restaurant ON " +
             "`transaction`.restaurant_id = restaurant.id WHERE `transaction`.user_id = :user_id")

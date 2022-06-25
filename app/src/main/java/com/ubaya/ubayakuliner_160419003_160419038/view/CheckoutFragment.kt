@@ -9,12 +9,15 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubaya.ubayakuliner_160419003_160419038.R
+import com.ubaya.ubayakuliner_160419003_160419038.model.DetailTransaction
+import com.ubaya.ubayakuliner_160419003_160419038.model.Transaction
 import com.ubaya.ubayakuliner_160419003_160419038.util.arrPaymentMethod
 import com.ubaya.ubayakuliner_160419003_160419038.util.userId
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.CheckoutViewModel
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListCartViewModel
 import kotlinx.android.synthetic.main.fragment_checkout.*
 import kotlinx.android.synthetic.main.fragment_profile.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
@@ -30,6 +33,7 @@ class CheckoutFragment : Fragment() {
     private var serviceFee:Int = (0.1 * Random.nextInt(2000,10000)).toInt()
     private var deliveryFee:Int = (Random.nextDouble(0.1,1.0) * Random.nextInt(2000,10000)).toInt()
     private val listCartAdapter = CheckoutAdapter(arrayListOf())
+    private var restaurantId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +44,7 @@ class CheckoutFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val restaurantId = CheckoutFragmentArgs.fromBundle(requireArguments()).restaurantId
+        restaurantId = CheckoutFragmentArgs.fromBundle(requireArguments()).restaurantId
 
         viewModelCheckout = ViewModelProvider(this).get(CheckoutViewModel::class.java)
         viewModelCheckout.fetchUser()
@@ -53,6 +57,7 @@ class CheckoutFragment : Fragment() {
 
         recViewCheckout.layoutManager = LinearLayoutManager(context)
         recViewCheckout.adapter = listCartAdapter
+
 
         observeViewModel()
     }
@@ -80,16 +85,33 @@ class CheckoutFragment : Fragment() {
         viewModelCart.cartLiveData.observe(viewLifecycleOwner) {
             listCartAdapter.updateListCheckout(it)
 
+            val cartWithFood = it
             var subTotal = 0
             for(item in it) {
                 subTotal += (item.food.price * item.cart.qty)
             }
+            val grandTotal = subTotal + deliveryFee + serviceFee
 
             textDetailOrderSubtotal.text = String.format("Rp%,d", subTotal)
             textDetailOrderDeliveryFee.text = String.format("Rp%,d", deliveryFee)
             textDetailOrderServiceFee.text = String.format("Rp%,d", serviceFee)
-            textDetailTransGrandtotal.text = String.format("Rp%,d", subTotal + deliveryFee + serviceFee)
-            textOrderGrandtotal.text = String.format("Rp%,d", subTotal + deliveryFee + serviceFee)
+            textDetailTransGrandtotal.text = String.format("Rp%,d", grandTotal)
+            textOrderGrandtotal.text = String.format("Rp%,d", grandTotal)
+
+            buttonPlaceOrder.setOnClickListener{
+                val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
+                val currentDate = sdf.format(Date())
+                val id = UUID.randomUUID().toString().replace("-", "").uppercase()
+                val transaction = Transaction(userId, restaurantId, currentDate, editDeliveryAddress.text.toString(),
+                    deliveryFee, serviceFee, subTotal, grandTotal, "Ongoing", null, id)
+                var detailTransaction: ArrayList<DetailTransaction> = arrayListOf()
+
+                for(list in cartWithFood) {
+                    detailTransaction.add(DetailTransaction(id, list.food.id, list.cart.qty, list.food.price))
+                }
+
+                viewModelCheckout.placeOrder(transaction, detailTransaction)
+            }
         }
         viewModelCart.cartLoadErrorLiveData.observe(viewLifecycleOwner){
             textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE

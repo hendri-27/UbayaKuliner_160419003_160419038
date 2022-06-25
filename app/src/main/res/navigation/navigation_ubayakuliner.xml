@@ -75,7 +75,7 @@
             app:argType="string" />
         <argument
             android:name="transactionId"
-            app:argType="integer" />
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/itemProfile"
@@ -101,6 +101,6 @@
         tools:layout="@layout/fragment_add_review" >
         <argument
             android:name="transactionId"
-            app:argType="integer" />
+            app:argType="string" />
     </fragment>
 </navigation>

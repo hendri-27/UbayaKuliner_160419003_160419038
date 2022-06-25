@@ -37,8 +37,8 @@ data class Transaction(
     var grandTotal:Int,
     var status:String,
     var rate:Float?,
-    @PrimaryKey(autoGenerate = true)
-    val id:Int = 0
+    @PrimaryKey
+    val id:String
 )
 
 data class TransactionWithRestaurant(

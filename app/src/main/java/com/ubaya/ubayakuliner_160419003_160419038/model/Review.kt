@@ -2,7 +2,7 @@ package com.ubaya.ubayakuliner_160419003_160419038.model
 
 import androidx.room.*
 
-@Entity(primaryKeys = ["id","restaurant_id", "transaction_id"],
+@Entity(primaryKeys = ["restaurant_id", "transaction_id"],
     foreignKeys = [
         ForeignKey(
             entity = Restaurant::class,
@@ -28,14 +28,12 @@ data class Review(
     @ColumnInfo(name = "restaurant_id")
     val restaurantId:Int,
     @ColumnInfo(name = "transaction_id")
-    val transactionId:Int,
+    val transactionId:String,
     @ColumnInfo(name = "user_id")
     val userId:Int,
     var rating:Float,
     var message:String,
     var date:String,
-    @PrimaryKey(autoGenerate = true)
-    val id:Int = 0
 )
 
 data class ReviewWithUser(

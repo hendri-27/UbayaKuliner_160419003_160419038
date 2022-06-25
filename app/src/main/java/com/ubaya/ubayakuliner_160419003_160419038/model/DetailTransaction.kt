@@ -22,7 +22,7 @@ import com.google.gson.annotations.SerializedName
 )
 data class DetailTransaction(
     @ColumnInfo(name = "transaction_id")
-    val transactionId:Int,
+    val transactionId:String,
     @ColumnInfo(name = "food_id")
     val foodId:Int,
     @ColumnInfo(name = "quantity")

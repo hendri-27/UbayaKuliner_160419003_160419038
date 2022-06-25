@@ -9,7 +9,9 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.ubaya.ubayakuliner_160419003_160419038.model.DetailTransaction
 import com.ubaya.ubayakuliner_160419003_160419038.model.Restaurant
+import com.ubaya.ubayakuliner_160419003_160419038.model.Transaction
 import com.ubaya.ubayakuliner_160419003_160419038.model.User
 import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
 import com.ubaya.ubayakuliner_160419003_160419038.util.userId
@@ -46,6 +48,14 @@ class CheckoutViewModel(application: Application) : AndroidViewModel(application
         launch {
             val db = buildDb(getApplication())
             RestaurantLiveData.value = db.restaurantDao().select(resto_id)
+        }
+    }
+
+    fun placeOrder(transaction: Transaction, listDetailTransaction: ArrayList<DetailTransaction>) {
+        launch {
+            val db = buildDb(getApplication())
+            db.transactionDao().insert(transaction)
+            db.detailTransactionDao().insert(*listDetailTransaction.toList().toTypedArray())
         }
     }
 }
