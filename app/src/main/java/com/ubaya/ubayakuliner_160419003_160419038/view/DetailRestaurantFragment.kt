@@ -44,7 +44,7 @@ class DetailRestaurantFragment : Fragment() {
         textDetailRestoRating.text = "${restaurant.ratingTotal ?: "New"} (See Reviews)"
 
         cardReview.setOnClickListener {
-            val action = DetailRestaurantFragmentDirections.actionListReviewFragment(restaurant.id.toString())
+            val action = DetailRestaurantFragmentDirections.actionListReviewFragment(restaurant.id)
             Navigation.findNavController(it).navigate(action)
         }
         buttonCart.setOnClickListener {
