@@ -5,11 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.R
-import com.ubaya.ubayakuliner_160419003_160419038.model.Review
+import com.ubaya.ubayakuliner_160419003_160419038.model.ReviewWithUser
 import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import kotlinx.android.synthetic.main.review_list_item.view.*
 
-class ListReviewAdapter(val listReview:ArrayList<Review>) : RecyclerView.Adapter<ListReviewAdapter.ReviewViewHolder>() {
+class ListReviewAdapter(val listReviewWithUser:ArrayList<ReviewWithUser>) : RecyclerView.Adapter<ListReviewAdapter.ReviewViewHolder>() {
     class ReviewViewHolder(var view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
@@ -20,24 +20,24 @@ class ListReviewAdapter(val listReview:ArrayList<Review>) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
-        val review = listReview[position]
+        val reviewWithUser = listReviewWithUser[position]
         with(holder.view) {
-            textReviewUsername.text = review.user.username
-            ratingBarDetailReview.rating = review.rating
-            textReview.text = review.message
-            textReviewDate.text = review.date
+            textReviewUsername.text = reviewWithUser.user.username
+            ratingBarDetailReview.rating = reviewWithUser.review.rating
+            textReview.text = reviewWithUser.review.message
+            textReviewDate.text = reviewWithUser.review.date
             imageReviewUser.loadImage(
-                review.user.photoURL,
+                reviewWithUser.user.photoURL,
                 progressLoadingReviewUserPhoto
             )
         }
     }
 
-    override fun getItemCount() = listReview.size
+    override fun getItemCount() = listReviewWithUser.size
 
-    fun updateListReview(newListReview: ArrayList<Review>) {
-        listReview.clear()
-        listReview.addAll(newListReview)
+    fun updateListReview(newListReviewWithUser: ArrayList<ReviewWithUser>) {
+        listReviewWithUser.clear()
+        listReviewWithUser.addAll(newListReviewWithUser)
         notifyDataSetChanged()
     }
 }

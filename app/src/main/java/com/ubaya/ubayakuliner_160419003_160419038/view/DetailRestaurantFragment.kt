@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubaya.ubayakuliner_160419003_160419038.R
+import com.ubaya.ubayakuliner_160419003_160419038.model.Cart
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.DetailRestaurantViewModel
 import kotlinx.android.synthetic.main.fragment_detail_restaurant.*
 
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_detail_restaurant.*
  */
 class DetailRestaurantFragment : Fragment() {
     private lateinit var viewModel:DetailRestaurantViewModel
-    private val foodListAdapter = ListFoodAdapter(arrayListOf())
+    private val cartWithFoodListAdapter = ListFoodAdapter(arrayListOf(), viewModel)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,8 +33,9 @@ class DetailRestaurantFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(DetailRestaurantViewModel::class.java)
 
+//        cartWithFoodListAdapter.viewModel = viewModel
         val restaurant = DetailRestaurantFragmentArgs.fromBundle(requireArguments()).restaurant
-        viewModel.fetch(restaurant.id.toString())
+        viewModel.fetchFoodWithCart(restaurant.id)
 
         textDetailRestoName.text = restaurant.name
         textDetailRestoAddress.text = restaurant.address
@@ -50,7 +52,7 @@ class DetailRestaurantFragment : Fragment() {
             Navigation.findNavController(it).navigate(action)
         }
         recFoodView.layoutManager = LinearLayoutManager(context)
-        recFoodView.adapter = foodListAdapter
+        recFoodView.adapter = cartWithFoodListAdapter
 
         observeViewModel()
     }
@@ -59,7 +61,7 @@ class DetailRestaurantFragment : Fragment() {
         viewModel.foodLiveData.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()){
                 textNoDataDetailResto.visibility = View.GONE
-                foodListAdapter.updateListFood(it)
+                cartWithFoodListAdapter.updateListFoodWithCart(it)
             }else {
                 textNoDataDetailResto.visibility = View.VISIBLE
             }

@@ -45,7 +45,7 @@
         tools:layout="@layout/fragment_list_review">
         <argument
             android:name="restaurantId"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
