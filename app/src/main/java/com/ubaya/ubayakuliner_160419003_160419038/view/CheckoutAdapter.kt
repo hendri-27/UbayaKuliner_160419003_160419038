@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.model.Cart
+import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
 import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import kotlinx.android.synthetic.main.detail_transaction_item.view.*
 
-class CheckoutAdapter(val listCart:ArrayList<Cart>) : RecyclerView.Adapter<CheckoutAdapter.CheckoutViewHolder>() {
+class CheckoutAdapter(val listCart:ArrayList<CartWithFood>) : RecyclerView.Adapter<CheckoutAdapter.CheckoutViewHolder>() {
     class CheckoutViewHolder(var view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CheckoutViewHolder {
@@ -20,14 +21,17 @@ class CheckoutAdapter(val listCart:ArrayList<Cart>) : RecyclerView.Adapter<Check
     }
 
     override fun onBindViewHolder(holder: CheckoutViewHolder, position: Int) {
-        val cart = listCart[position]
+        val cartWithFood = listCart[position]
+        val cart = cartWithFood.cart
+        val food = cartWithFood.food
+
         with(holder.view) {
-            textDetailTransFoodName.text = cart.food.name
-            textDetailTransQty.text = "${cart.cartQty} x"
-            textDetailTransFoodPrice.text = String.format("Rp%,d", cart.cartQty * cart.food.price)
+            textDetailTransFoodName.text = food.name
+            textDetailTransQty.text = "${cart.qty} x"
+            textDetailTransFoodPrice.text = String.format("Rp%,d", cart.qty * food.price)
 
             imageDetailTransFood.loadImage(
-                "https://hendri-27.github.io/ubayakuliner_db/images" + cart.food.photoURL,
+                "https://hendri-27.github.io/ubayakuliner_db/images" + food.photoURL,
                 progressLoadingDetailTransFoodPhoto
             )
         }
@@ -35,7 +39,7 @@ class CheckoutAdapter(val listCart:ArrayList<Cart>) : RecyclerView.Adapter<Check
 
     override fun getItemCount() = listCart.size
 
-    fun updateListCheckout(newListCart: ArrayList<Cart>){
+    fun updateListCheckout(newListCart: ArrayList<CartWithFood>){
         listCart.clear()
         listCart.addAll(newListCart)
         notifyDataSetChanged()

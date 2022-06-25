@@ -32,8 +32,7 @@ class ListTransactionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(ListTransactionViewModel::class.java)
-
-        viewModel.refresh(userId.toString())
+        viewModel.refresh()
 
         recViewListTransaction.layoutManager = LinearLayoutManager(context)
         recViewListTransaction.adapter = transactionListAdapter
@@ -44,7 +43,7 @@ class ListTransactionFragment : Fragment() {
             recViewListTransaction.visibility = View.GONE
             textErrorListTransaction.visibility = View.GONE
             progressLoadListTransaction.visibility = View.GONE
-            viewModel.refresh(userId.toString())
+            viewModel.refresh()
             refreshLayout.isRefreshing = false
         }
     }

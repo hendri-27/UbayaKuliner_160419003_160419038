@@ -10,8 +10,9 @@ interface DetailTransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg detailTransaction: DetailTransaction)
 
-    @Query("SELECT food.id, food.restaurant_id, food.name, food.price, food.photo_url, " +
-            "detail_transaction.quantity, detail_transaction.price FROM detail_transaction INNER JOIN " +
-            "food ON detail_transaction.food_id = food.id WHERE detail_transaction.transaction_id= :transaction_id")
-    suspend fun select(transaction_id: Int): List<DetailTransactionWithFood>
+    @Query("SELECT food.*, `transaction`.*, detail_transaction.quantity, detail_transaction.price FROM detail_transaction " +
+            "INNER JOIN food ON detail_transaction.food_id = food.id INNER JOIN `transaction` ON " +
+            "detail_transaction.transaction_id = `transaction`.id WHERE " +
+            "detail_transaction.transaction_id= :transaction_id")
+    suspend fun select(transaction_id: Int): ArrayList<DetailTransactionWithFood>
 }

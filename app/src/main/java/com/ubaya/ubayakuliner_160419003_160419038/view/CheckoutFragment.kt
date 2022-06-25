@@ -27,7 +27,6 @@ import kotlin.random.Random
 class CheckoutFragment : Fragment() {
     private lateinit var viewModelCheckout:CheckoutViewModel
     private lateinit var viewModelCart:ListCartViewModel
-    private var subTotal:Int = 0
     private var serviceFee:Int = (0.1 * Random.nextInt(2000,10000)).toInt()
     private var deliveryFee:Int = (Random.nextDouble(0.1,1.0) * Random.nextInt(2000,10000)).toInt()
     private val listCartAdapter = CheckoutAdapter(arrayListOf())
@@ -41,7 +40,11 @@ class CheckoutFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val restaurantId = CheckoutFragmentArgs.fromBundle(requireArguments()).restaurantId
+
         viewModelCheckout = ViewModelProvider(this).get(CheckoutViewModel::class.java)
+        viewModelCheckout.fetchUser()
+        viewModelCheckout.fetchRestaurant(restaurantId)
         viewModelCart = ViewModelProvider(this).get(ListCartViewModel::class.java)
 
         val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrPaymentMethod)
@@ -51,27 +54,47 @@ class CheckoutFragment : Fragment() {
         recViewCheckout.layoutManager = LinearLayoutManager(context)
         recViewCheckout.adapter = listCartAdapter
 
-
-        listCartAdapter.updateListCheckout(ArrayList(listCart.toList()))
-
         observeViewModel()
     }
 
     private fun observeViewModel(){
         viewModelCheckout.UserLiveData.observe(viewLifecycleOwner) {
             editCheckoutPhone.setText(it.phoneNumber)
+            editCheckoutRecipientName.setText(it.name)
+        }
+        viewModelCheckout.UserLoadErrorLiveData.observe(viewLifecycleOwner){
+            textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE
+        }
+        viewModelCheckout.UserLoadingLiveData.observe(viewLifecycleOwner){
+            if (it){
+                scrollViewCheckout.visibility = View.GONE
+                cardViewCheckout.visibility = View.GONE
+                progressLoadCheckout.visibility = View.VISIBLE
+            }else{
+                scrollViewCheckout.visibility = View.VISIBLE
+                cardViewCheckout.visibility = View.VISIBLE
+                progressLoadCheckout.visibility = View.GONE
+            }
+        }
+
+        viewModelCart.cartLiveData.observe(viewLifecycleOwner) {
+            listCartAdapter.updateListCheckout(it)
+
+            var subTotal = 0
+            for(item in it) {
+                subTotal += (item.food.price * item.cart.qty)
+            }
 
             textDetailOrderSubtotal.text = String.format("Rp%,d", subTotal)
             textDetailOrderDeliveryFee.text = String.format("Rp%,d", deliveryFee)
             textDetailOrderServiceFee.text = String.format("Rp%,d", serviceFee)
             textDetailTransGrandtotal.text = String.format("Rp%,d", subTotal + deliveryFee + serviceFee)
             textOrderGrandtotal.text = String.format("Rp%,d", subTotal + deliveryFee + serviceFee)
-
         }
-        viewModelCheckout.UserLoadErrorLiveData.observe(viewLifecycleOwner){
+        viewModelCart.cartLoadErrorLiveData.observe(viewLifecycleOwner){
             textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE
         }
-        viewModelCheckout.UserLoadingLiveData.observe(viewLifecycleOwner){
+        viewModelCart.cartLoadingLiveData.observe(viewLifecycleOwner){
             if (it){
                 scrollViewCheckout.visibility = View.GONE
                 cardViewCheckout.visibility = View.GONE

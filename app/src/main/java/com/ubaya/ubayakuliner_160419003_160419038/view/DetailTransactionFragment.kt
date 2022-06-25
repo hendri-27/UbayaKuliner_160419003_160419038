@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_detail_transaction.*
  */
 class DetailTransactionFragment : Fragment() {
     private lateinit var viewModel: DetailTransactionViewModel
-    private val detailFoodList = DetailTransactionAdapter(arrayListOf())
+    private val detailFoodListAdapter = DetailTransactionAdapter(arrayListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,24 +32,15 @@ class DetailTransactionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(DetailTransactionViewModel::class.java)
 
-        val transaction = DetailTransactionFragmentArgs.fromBundle(requireArguments()).transaction
-        viewModel.fetch(transaction)
+        val restaurantName = DetailTransactionFragmentArgs.fromBundle(requireArguments()).restaurantName
+        val transactionId = DetailTransactionFragmentArgs.fromBundle(requireArguments()).transactionId
+        viewModel.fetch(transactionId)
 
-        textDetailTransRestoName.text = transaction.restaurant.name
-        textDetailTransPaymentMethod.text = String.format("Rp%,d - %s", transaction.grandTotal,transaction.paymentMethod)
-        textDetailDetailTransactionUserPhone.text = transaction.user.phoneNumber
-        textDetailTransactionAddress.text = transaction.location
-        textDetailTransRestoName2.text = transaction.restaurant.name
-        textDetailTransSubtotal.text = String.format("Rp%,d",transaction.foodSubtotal)
-        textDetailTransDeliveryFee.text = String.format("Rp%,d",transaction.deliveryFee)
-        textDetailTransServiceFee.text = String.format("Rp%,d",transaction.serviceFee)
-        textDetailTransGrandtotal.text = String.format("Rp%,d",transaction.grandTotal)
-        textDetailTransactionID.text = transaction.id
-        textDetailTransactionDate.text = transaction.date
-        textDetailTransactionMethodPayment.text = transaction.paymentMethod
+        textDetailTransRestoName.text = restaurantName
+        textDetailTransRestoName2.text = restaurantName
 
         recViewDetailTrans.layoutManager = LinearLayoutManager(context)
-        recViewDetailTrans.adapter = detailFoodList
+        recViewDetailTrans.adapter = detailFoodListAdapter
 
         observeViewModel()
     }
@@ -58,7 +49,20 @@ class DetailTransactionFragment : Fragment() {
         viewModel.detailTransactionLiveData.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()){
                 textNoDataDetailTransaction.visibility = View.GONE
-                detailFoodList.updateListDetailTransaction(it)
+                val transaction = it[0].transaction
+
+//                textDetailTransPaymentMethod.text = String.format("Rp%,d - %s", transaction.grandTotal, transaction.paymentMethod)
+                textDetailTransPaymentMethod.text = String.format("Rp%,d", transaction.grandTotal)
+                textDetailTransactionAddress.text = transaction.location
+                textDetailTransSubtotal.text = String.format("Rp%,d",transaction.foodSubtotal)
+                textDetailTransDeliveryFee.text = String.format("Rp%,d",transaction.deliveryFee)
+                textDetailTransServiceFee.text = String.format("Rp%,d",transaction.serviceFee)
+                textDetailTransGrandtotal.text = String.format("Rp%,d",transaction.grandTotal)
+                textDetailTransactionID.text = transaction.id.toString()
+                textDetailTransactionDate.text = transaction.date
+//                textDetailTransactionMethodPayment.text = transaction.paymentMethod
+
+                detailFoodListAdapter.updateListDetailTransaction(it)
             }else {
                 textNoDataDetailTransaction.visibility = View.VISIBLE
             }

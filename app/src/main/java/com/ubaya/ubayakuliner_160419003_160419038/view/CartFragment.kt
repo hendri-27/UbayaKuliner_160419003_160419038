@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_list_restaurant.*
 class CartFragment : Fragment() {
     private lateinit var viewModel:ListCartViewModel
     private val cartListAdapter = ListCartAdapter(arrayListOf(), this, viewModel)
+    private var restaurantId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,11 +43,6 @@ class CartFragment : Fragment() {
 
         observeViewModel()
 
-        buttonCartCheckout.setOnClickListener {
-            val action = CartFragmentDirections.actionCheckoutFragment()
-            Navigation.findNavController(it).navigate(action)
-        }
-
         refreshLayout.setOnRefreshListener {
             recViewListCart.visibility = View.GONE
             cardViewCheckout.visibility = View.GONE
@@ -62,12 +58,20 @@ class CartFragment : Fragment() {
             if (it.isNotEmpty()){
                 textNoDataListCart.visibility = View.GONE
                 cartListAdapter.updateListFood(it)
+
                 var subTotal = 0
                 for (cartWithFood in it){
                     subTotal += (cartWithFood.food.price * cartWithFood.cart.qty)
                 }
+
                 textCartSubtotal.text = String.format("Rp%,d", subTotal)
                 cartListAdapter.setSubTotal(subTotal)
+
+                val restaurantId = it[0].food.restaurantId
+                buttonCartCheckout.setOnClickListener {
+                    val action = CartFragmentDirections.actionCheckoutFragment(restaurantId)
+                    Navigation.findNavController(it).navigate(action)
+                }
             }else {
                 textNoDataListCart.visibility = View.VISIBLE
             }

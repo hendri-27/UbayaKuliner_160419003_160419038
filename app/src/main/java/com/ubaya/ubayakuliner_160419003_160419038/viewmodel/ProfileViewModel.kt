@@ -11,6 +11,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.ubaya.ubayakuliner_160419003_160419038.model.User
 import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
+import com.ubaya.ubayakuliner_160419003_160419038.util.userId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -24,26 +25,26 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     private var job = Job()
     override val coroutineContext: CoroutineContext get() = job + Dispatchers.Main
 
-    fun fetch(id:Int){
+    fun fetch(){
         profileLoadErrorLiveData.value = false
         profileLoadingLiveData.value = true
 
         launch {
             val db = buildDb(getApplication())
-            profileLiveData.value = db.userDao().select(id)
+            profileLiveData.value = db.userDao().select(userId)
         }
     }
 
-    fun update(id:Int,name:String,gender:String,birthDate:String,phoneNumber:String,email:String,password:String){
+    fun update(name:String,gender:String,birthDate:String,phoneNumber:String,email:String,password:String){
         profileLoadErrorLiveData.value = false
         profileLoadingLiveData.value = true
 
         launch {
             val db = buildDb(getApplication())
 
-            db.userDao().update(id,name,gender,birthDate,phoneNumber,email,password)
+            db.userDao().update(userId,name,gender,birthDate,phoneNumber,email,password)
 
-            profileLiveData.value = db.userDao().select(id)
+            profileLiveData.value = db.userDao().select(userId)
         }
     }
 }

@@ -10,11 +10,9 @@ interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg transaction: Transaction)
 
-    @Query("SELECT * FROM `transaction` WHERE user_id = :user_id")
-    suspend fun select(user_id: Int): List<Transaction>
-
-    @Query("SELECT * FROM `transaction` WHERE id = :transaction_id")
-    suspend fun selectByTransaction(transaction_id: Int): Transaction
+    @Query("SELECT `transaction`.*, restaurant.* FROM `transaction` INNER JOIN restaurant ON " +
+            "`transaction`.restaurant_id = restaurant.id WHERE `transaction`.user_id = :user_id")
+    suspend fun select(user_id: Int): ArrayList<TransactionWithRestaurant>
 
     @Query("SELECT `transaction`.*, restaurant.* FROM `transaction` INNER JOIN restaurant ON " +
             "`transaction`.restaurant_id = restaurant.id WHERE `transaction`.id = :transaction_id")

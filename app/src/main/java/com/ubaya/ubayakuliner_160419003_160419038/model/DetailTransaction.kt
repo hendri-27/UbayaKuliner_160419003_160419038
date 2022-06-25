@@ -34,6 +34,8 @@ data class DetailTransaction(
 data class DetailTransactionWithFood(
     @Embedded
     val food:Food,
+    @Embedded
+    val transaction: Transaction,
     val qty:Int,
     val price:Int
 )

@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class DetailTransactionViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
-    val detailTransactionLiveData = MutableLiveData<List<DetailTransactionWithFood>>()
+    val detailTransactionLiveData = MutableLiveData<ArrayList<DetailTransactionWithFood>>()
     val detailTransactionLoadErrorLiveData = MutableLiveData<Boolean>()
     val detailTransactionLoadingLiveData = MutableLiveData<Boolean>()
     private var job = Job()

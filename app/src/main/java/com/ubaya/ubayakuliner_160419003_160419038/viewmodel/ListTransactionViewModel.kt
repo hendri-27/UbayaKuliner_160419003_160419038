@@ -22,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
 
 class ListTransactionViewModel(application: Application) : AndroidViewModel(application),
     CoroutineScope {
-    val transactionLiveData = MutableLiveData<List<Transaction>>()
+    val transactionLiveData = MutableLiveData<ArrayList<TransactionWithRestaurant>>()
     val transactionForReviewLiveData = MutableLiveData<TransactionWithRestaurant>()
     val transactionLoadErrorLiveData = MutableLiveData<Boolean>()
     val transactionForReviewLoadErrorLiveData = MutableLiveData<Boolean>()

@@ -49,6 +49,7 @@ class ProfileFragment : Fragment() {
                 myCalendar[Calendar.DAY_OF_MONTH] = day
                 updateLabel()
             }
+
         textInputBOD.setOnClickListener {
             DatePickerDialog(
                 view.context,
@@ -60,7 +61,7 @@ class ProfileFragment : Fragment() {
         }
 
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        viewModel.fetch(userId.toString())
+        viewModel.fetch()
 
         observeViewModel(adapter)
     }
