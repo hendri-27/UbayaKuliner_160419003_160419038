@@ -36,7 +36,7 @@ class ListReviewViewModel(application: Application) : AndroidViewModel(applicati
 
         launch {
             val db = buildDb(getApplication())
-            reviewLiveData.value = db.reviewDao().select(restoId)
+            reviewLiveData.value = ArrayList(db.reviewDao().select(restoId))
         }
     }
 

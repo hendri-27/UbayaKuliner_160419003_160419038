@@ -38,7 +38,7 @@ class ListTransactionViewModel(application: Application) : AndroidViewModel(appl
 
         launch {
             val db = buildDb(getApplication())
-            transactionLiveData.value = db.transactionDao().select(userId)
+            transactionLiveData.value = ArrayList(db.transactionDao().select(userId))
         }
     }
 

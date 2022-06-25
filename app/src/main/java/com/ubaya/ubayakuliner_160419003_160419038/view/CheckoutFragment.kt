@@ -107,7 +107,7 @@ class CheckoutFragment : Fragment() {
                 var detailTransaction: ArrayList<DetailTransaction> = arrayListOf()
 
                 for(list in cartWithFood) {
-                    detailTransaction.add(DetailTransaction(id, list.food.id, list.cart.qty, list.food.price))
+                    detailTransaction.add(DetailTransaction(id, list.food.food_id, list.cart.qty, list.food.price))
                 }
 
                 viewModelCheckout.placeOrder(transaction, detailTransaction)

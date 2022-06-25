@@ -33,7 +33,7 @@ class DetailRestaurantViewModel(application: Application) : AndroidViewModel(app
         foodLoadingLiveData.value = true
         launch {
             val db = buildDb(getApplication())
-            foodLiveData.value = db.foodDao().select(userId, restoId)
+            foodLiveData.value = ArrayList(db.foodDao().select(userId, restoId))
         }
     }
 

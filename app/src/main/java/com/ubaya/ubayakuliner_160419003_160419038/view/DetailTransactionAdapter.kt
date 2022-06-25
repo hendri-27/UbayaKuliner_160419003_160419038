@@ -5,11 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.R
-import com.ubaya.ubayakuliner_160419003_160419038.model.DetailTransaction
 import com.ubaya.ubayakuliner_160419003_160419038.model.DetailTransactionWithFood
 import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import kotlinx.android.synthetic.main.detail_transaction_item.view.*
-import kotlinx.android.synthetic.main.food_list_item.view.*
 
 
 class DetailTransactionAdapter(val listDetailTransaction:ArrayList<DetailTransactionWithFood>) : RecyclerView.Adapter<DetailTransactionAdapter.DetailTransactionViewHolder>() {
@@ -28,7 +26,7 @@ class DetailTransactionAdapter(val listDetailTransaction:ArrayList<DetailTransac
 
         with(holder.view){
             textDetailTransFoodName.text = detailTransaction.food.name
-            textDetailTransFoodPrice.text = String.format("Rp%,d",detailTransaction.price)
+            textDetailTransFoodPrice.text = String.format("Rp%,d",detailTransaction.detail_price)
             textDetailTransQty.text = "${detailTransaction.qty} x"
 
             imageDetailTransFood.loadImage("https://hendri-27.github.io/ubayakuliner_db/images"+ food.photoURL, progressLoadingDetailTransFoodPhoto)

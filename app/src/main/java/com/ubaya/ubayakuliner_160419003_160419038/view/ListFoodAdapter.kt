@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.model.Cart
-import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
-import com.ubaya.ubayakuliner_160419003_160419038.model.Food
 import com.ubaya.ubayakuliner_160419003_160419038.model.FoodWithCart
 import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import com.ubaya.ubayakuliner_160419003_160419038.util.userId
@@ -52,7 +49,7 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, var viewMode
                 cardQtyCounter.visibility = View.VISIBLE
                 buttonAddCart.visibility = View.GONE
 
-                val newCart = Cart(userId,foodWithCart.food.id,1)
+                val newCart = Cart(userId,foodWithCart.food.food_id,1)
                 foodWithCart.cart = newCart
                 addNewCart(newCart)
                 textQtyFoodCounter.text = "1"
@@ -81,7 +78,7 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, var viewMode
             buttonIncreaseFIR.setOnClickListener {
                 if (foodWithCart.cart!!.qty < 200){
                     foodWithCart.cart!!.qty += 1
-                    updateCart(foodWithCart.food.id,foodWithCart.cart!!.qty)
+                    updateCart(foodWithCart.food.food_id,foodWithCart.cart!!.qty)
                     textQtyFoodCounter.text = "${foodWithCart.cart!!.qty}"
                     if (foodWithCart.cart!!.qty + 1 >= 199 ){
                         buttonIncreaseFIR.isEnabled = false

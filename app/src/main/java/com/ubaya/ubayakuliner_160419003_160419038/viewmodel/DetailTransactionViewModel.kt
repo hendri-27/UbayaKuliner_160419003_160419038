@@ -34,7 +34,7 @@ class DetailTransactionViewModel(application: Application) : AndroidViewModel(ap
         detailTransactionLoadingLiveData.value = true
         launch {
             val db = buildDb(getApplication())
-            detailTransactionLiveData.value = db.detailTransactionDao().select(transactionId)
+            detailTransactionLiveData.value = ArrayList(db.detailTransactionDao().select(transactionId))
         }
     }
 }

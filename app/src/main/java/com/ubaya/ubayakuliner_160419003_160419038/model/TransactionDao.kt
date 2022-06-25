@@ -12,7 +12,7 @@ interface TransactionDao {
 
     @Query("SELECT `transaction`.*, restaurant.* FROM `transaction` INNER JOIN restaurant ON " +
             "`transaction`.restaurant_id = restaurant.id WHERE `transaction`.user_id = :user_id")
-    suspend fun select(user_id: Int): ArrayList<TransactionWithRestaurant>
+    suspend fun select(user_id: Int): List<TransactionWithRestaurant>
 
     @Query("SELECT `transaction`.*, restaurant.* FROM `transaction` INNER JOIN restaurant ON " +
             "`transaction`.restaurant_id = restaurant.id WHERE `transaction`.id = :transaction_id")

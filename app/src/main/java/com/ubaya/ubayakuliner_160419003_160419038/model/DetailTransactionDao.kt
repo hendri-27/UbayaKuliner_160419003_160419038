@@ -11,8 +11,8 @@ interface DetailTransactionDao {
     suspend fun insert(vararg detailTransaction: DetailTransaction)
 
     @Query("SELECT food.*, `transaction`.*, detail_transaction.quantity, detail_transaction.price FROM detail_transaction " +
-            "INNER JOIN food ON detail_transaction.food_id = food.id INNER JOIN `transaction` ON " +
+            "INNER JOIN food ON detail_transaction.food_id = food.food_id INNER JOIN `transaction` ON " +
             "detail_transaction.transaction_id = `transaction`.id WHERE " +
             "detail_transaction.transaction_id= :transaction_id")
-    suspend fun select(transaction_id: Int): ArrayList<DetailTransactionWithFood>
+    suspend fun select(transaction_id: Int): List<DetailTransactionWithFood>
 }

@@ -34,7 +34,7 @@ class ListCartViewModel(application: Application) : AndroidViewModel(application
         cartLoadingLiveData.value = true
         launch { // Menjalankannya di thread coroutine
             val db = buildDb(getApplication())
-            cartLiveData.value = db.cartDao().select(userId)
+            cartLiveData.value = ArrayList(db.cartDao().select(userId))
         }
     }
 
@@ -43,7 +43,7 @@ class ListCartViewModel(application: Application) : AndroidViewModel(application
             val db = buildDb(getApplication())
             db.cartDao().update(userId, food_id, quantity)
 
-            cartLiveData.value = db.cartDao().select(userId)
+            cartLiveData.value = ArrayList(db.cartDao().select(userId))
         }
     }
 
@@ -52,7 +52,7 @@ class ListCartViewModel(application: Application) : AndroidViewModel(application
             val db = buildDb(getApplication())
             db.cartDao().delete(cart)
 
-            cartLiveData.value = db.cartDao().select(userId)
+            cartLiveData.value = ArrayList(db.cartDao().select(userId))
         }
     }
 }

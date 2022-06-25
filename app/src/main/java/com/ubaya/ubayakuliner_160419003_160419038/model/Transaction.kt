@@ -16,7 +16,8 @@ import androidx.room.*
             childColumns = ["restaurant_id"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index(value = ["id"], unique = true)]
 )
 data class Transaction(
     @ColumnInfo(name = "user_id")
@@ -37,7 +38,6 @@ data class Transaction(
     var grandTotal:Int,
     var status:String,
     var rate:Float?,
-    @PrimaryKey
     val id:String
 )
 

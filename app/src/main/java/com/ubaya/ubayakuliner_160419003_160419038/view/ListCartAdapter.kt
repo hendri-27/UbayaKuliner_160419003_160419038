@@ -5,10 +5,8 @@ import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.R
-import com.ubaya.ubayakuliner_160419003_160419038.model.Cart
 import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
 import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListCartViewModel
@@ -50,7 +48,7 @@ val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartVie
                         viewParent.cardViewCheckout.visibility = View.GONE
                     }
                 }else {
-                    viewModel.update(food.id, qty)
+                    viewModel.update(food.food_id, qty)
                     textQtyCartFoodCounter.text = qty.toString()
 
                     if (!buttonIncreaseFIC.isEnabled){
@@ -70,7 +68,7 @@ val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartVie
                 if (buttonIncreaseFIC.isEnabled){
                     subTotal += food.price
                     viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
-                    viewModel.update(food.id, qty)
+                    viewModel.update(food.food_id, qty)
                     textQtyCartFoodCounter.text = qty.toString()
                 }
 

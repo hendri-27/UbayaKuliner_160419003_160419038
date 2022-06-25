@@ -11,7 +11,7 @@ import androidx.room.*
     ),
     ForeignKey(
         entity = Food::class,
-        parentColumns = ["id"],
+        parentColumns = ["food_id"],
         childColumns = ["food_id"],
         onDelete = ForeignKey.CASCADE
     )
