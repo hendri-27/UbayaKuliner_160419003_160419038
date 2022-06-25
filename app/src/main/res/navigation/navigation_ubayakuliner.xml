@@ -51,14 +51,7 @@
         android:id="@+id/checkoutFragment"
         android:name="com.ubaya.ubayakuliner_160419003_160419038.view.CheckoutFragment"
         android:label="Checkout"
-        tools:layout="@layout/fragment_checkout">
-        <argument
-            android:name="cart"
-            app:argType="com.ubaya.ubayakuliner_160419003_160419038.model.Cart[]" />
-        <argument
-            android:name="subtotal"
-            app:argType="integer" />
-    </fragment>
+        tools:layout="@layout/fragment_checkout"/>
     <fragment
         android:id="@+id/itemCart"
         android:name="com.ubaya.ubayakuliner_160419003_160419038.view.CartFragment"

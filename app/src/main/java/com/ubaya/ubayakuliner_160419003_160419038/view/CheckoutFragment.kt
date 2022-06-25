@@ -12,6 +12,7 @@ import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.util.arrPaymentMethod
 import com.ubaya.ubayakuliner_160419003_160419038.util.userId
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.CheckoutViewModel
+import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListCartViewModel
 import kotlinx.android.synthetic.main.fragment_checkout.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.util.*
@@ -24,7 +25,8 @@ import kotlin.random.Random
  * create an instance of this fragment.
  */
 class CheckoutFragment : Fragment() {
-    private lateinit var viewModel:CheckoutViewModel
+    private lateinit var viewModelCheckout:CheckoutViewModel
+    private lateinit var viewModelCart:ListCartViewModel
     private var subTotal:Int = 0
     private var serviceFee:Int = (0.1 * Random.nextInt(2000,10000)).toInt()
     private var deliveryFee:Int = (Random.nextDouble(0.1,1.0) * Random.nextInt(2000,10000)).toInt()
@@ -39,11 +41,8 @@ class CheckoutFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(this).get(CheckoutViewModel::class.java)
-
-        subTotal = CheckoutFragmentArgs.fromBundle(requireArguments()).subtotal
-        val listCart = CheckoutFragmentArgs.fromBundle(requireArguments()).cart
-        viewModel.fetch(userId.toString(),listCart[0].restaurantId.toString())
+        viewModelCheckout = ViewModelProvider(this).get(CheckoutViewModel::class.java)
+        viewModelCart = ViewModelProvider(this).get(ListCartViewModel::class.java)
 
         val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrPaymentMethod)
         adapter.setDropDownViewResource(R.layout.myspinner_item_layout)
@@ -52,11 +51,6 @@ class CheckoutFragment : Fragment() {
         recViewCheckout.layoutManager = LinearLayoutManager(context)
         recViewCheckout.adapter = listCartAdapter
 
-        textDetailOrderSubtotal.text = String.format("Rp%,d", subTotal)
-        textDetailOrderDeliveryFee.text = String.format("Rp%,d", deliveryFee)
-        textDetailOrderServiceFee.text = String.format("Rp%,d", serviceFee)
-        textDetailTransGrandtotal.text = String.format("Rp%,d", subTotal + deliveryFee + serviceFee)
-        textOrderGrandtotal.text = String.format("Rp%,d", subTotal + deliveryFee + serviceFee)
 
         listCartAdapter.updateListCheckout(ArrayList(listCart.toList()))
 
@@ -64,13 +58,20 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun observeViewModel(){
-        viewModel.UserLiveData.observe(viewLifecycleOwner) {
+        viewModelCheckout.UserLiveData.observe(viewLifecycleOwner) {
             editCheckoutPhone.setText(it.phoneNumber)
+
+            textDetailOrderSubtotal.text = String.format("Rp%,d", subTotal)
+            textDetailOrderDeliveryFee.text = String.format("Rp%,d", deliveryFee)
+            textDetailOrderServiceFee.text = String.format("Rp%,d", serviceFee)
+            textDetailTransGrandtotal.text = String.format("Rp%,d", subTotal + deliveryFee + serviceFee)
+            textOrderGrandtotal.text = String.format("Rp%,d", subTotal + deliveryFee + serviceFee)
+
         }
-        viewModel.UserLoadErrorLiveData.observe(viewLifecycleOwner){
+        viewModelCheckout.UserLoadErrorLiveData.observe(viewLifecycleOwner){
             textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE
         }
-        viewModel.UserLoadingLiveData.observe(viewLifecycleOwner){
+        viewModelCheckout.UserLoadingLiveData.observe(viewLifecycleOwner){
             if (it){
                 scrollViewCheckout.visibility = View.GONE
                 cardViewCheckout.visibility = View.GONE
@@ -81,13 +82,14 @@ class CheckoutFragment : Fragment() {
                 progressLoadCheckout.visibility = View.GONE
             }
         }
-        viewModel.RestaurantLiveData.observe(viewLifecycleOwner) {
+
+        viewModelCheckout.RestaurantLiveData.observe(viewLifecycleOwner) {
             textCheckoutRestoName.text = it.name
         }
-        viewModel.RestaurantLoadErrorLiveData.observe(viewLifecycleOwner){
+        viewModelCheckout.RestaurantLoadErrorLiveData.observe(viewLifecycleOwner){
             textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE
         }
-        viewModel.RestaurantLoadingLiveData.observe(viewLifecycleOwner){
+        viewModelCheckout.RestaurantLoadingLiveData.observe(viewLifecycleOwner){
             if (it){
                 scrollViewCheckout.visibility = View.GONE
                 cardViewCheckout.visibility = View.GONE

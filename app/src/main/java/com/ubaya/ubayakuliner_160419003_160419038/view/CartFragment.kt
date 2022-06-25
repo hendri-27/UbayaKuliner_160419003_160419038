@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_list_restaurant.*
  */
 class CartFragment : Fragment() {
     private lateinit var viewModel:ListCartViewModel
-    private val cartListAdapter = ListCartAdapter(arrayListOf(), this)
+    private val cartListAdapter = ListCartAdapter(arrayListOf(), this, viewModel)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +35,7 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(ListCartViewModel::class.java)
-
-        viewModel.refresh(userId.toString())
+        viewModel.refresh()
 
         recViewListCart.layoutManager = LinearLayoutManager(context)
         recViewListCart.adapter = cartListAdapter
@@ -44,7 +43,7 @@ class CartFragment : Fragment() {
         observeViewModel()
 
         buttonCartCheckout.setOnClickListener {
-            val action = CartFragmentDirections.actionCheckoutFragment(cartListAdapter.listCart.toTypedArray(),cartListAdapter.getSubTotal())
+            val action = CartFragmentDirections.actionCheckoutFragment()
             Navigation.findNavController(it).navigate(action)
         }
 
@@ -53,7 +52,7 @@ class CartFragment : Fragment() {
             cardViewCheckout.visibility = View.GONE
             textErrorCart.visibility = View.GONE
             progressLoadCart.visibility = View.GONE
-            viewModel.refresh(userId.toString())
+            viewModel.refresh()
             refreshLayout.isRefreshing = false
         }
     }
@@ -64,8 +63,8 @@ class CartFragment : Fragment() {
                 textNoDataListCart.visibility = View.GONE
                 cartListAdapter.updateListFood(it)
                 var subTotal = 0
-                for (cart in it){
-                    subTotal += (cart.food.price * cart.cartQty)
+                for (cartWithFood in it){
+                    subTotal += (cartWithFood.food.price * cartWithFood.cart.qty)
                 }
                 textCartSubtotal.text = String.format("Rp%,d", subTotal)
                 cartListAdapter.setSubTotal(subTotal)

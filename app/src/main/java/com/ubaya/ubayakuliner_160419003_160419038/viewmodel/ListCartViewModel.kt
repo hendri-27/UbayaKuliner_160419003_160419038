@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class ListCartViewModel(application: Application) : AndroidViewModel(application), CoroutineScope  {
-    val cartLiveData = MutableLiveData<List<CartWithFood>>()
+    val cartLiveData = MutableLiveData<ArrayList<CartWithFood>>()
     val cartLoadErrorLiveData = MutableLiveData<Boolean>()
     val cartLoadingLiveData = MutableLiveData<Boolean>()
     private var job = Job()
