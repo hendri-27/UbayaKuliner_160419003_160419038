@@ -14,7 +14,7 @@ import com.google.gson.annotations.SerializedName
         ),
         ForeignKey(
             entity = Food::class,
-            parentColumns = ["food_id"],
+            parentColumns = ["id"],
             childColumns = ["food_id"],
             onDelete = ForeignKey.CASCADE
         )
@@ -32,11 +32,12 @@ data class DetailTransaction(
 )
 
 data class DetailTransactionWithFood(
+    @Embedded(prefix = "food_")
     val food:Food,
-    @Embedded
+    @Embedded(prefix = "transaction_")
     val transaction: Transaction,
-    @ColumnInfo(name = "quantity")
+    @ColumnInfo(name = "detail_quantity")
     val qty:Int,
-    @ColumnInfo(name = "price")
+    @ColumnInfo(name = "detail_price")
     val detail_price:Int
 )

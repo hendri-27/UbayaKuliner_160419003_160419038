@@ -22,12 +22,12 @@ data class Food(
     @ColumnInfo(name = "photo_url")
     var photoURL:String?,
     @PrimaryKey(autoGenerate = true)
-    val food_id:Int = 0
+    val id:Int = 0
 )
 
 data class FoodWithCart(
-    @Embedded
+    @Embedded(prefix="food_")
     var food: Food,
-    @Embedded
+    @Embedded(prefix="cart_")
     var cart: Cart?
 )

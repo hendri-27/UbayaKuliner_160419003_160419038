@@ -48,7 +48,7 @@ val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartVie
                         viewParent.cardViewCheckout.visibility = View.GONE
                     }
                 }else {
-                    viewModel.update(food.food_id, qty)
+                    viewModel.update(food.id, qty)
                     textQtyCartFoodCounter.text = qty.toString()
 
                     if (!buttonIncreaseFIC.isEnabled){
@@ -68,7 +68,7 @@ val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartVie
                 if (buttonIncreaseFIC.isEnabled){
                     subTotal += food.price
                     viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
-                    viewModel.update(food.food_id, qty)
+                    viewModel.update(food.id, qty)
                     textQtyCartFoodCounter.text = qty.toString()
                 }
 

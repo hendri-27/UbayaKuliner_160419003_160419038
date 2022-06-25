@@ -42,8 +42,8 @@ data class Transaction(
 )
 
 data class TransactionWithRestaurant(
-    @Embedded
+    @Embedded(prefix = "transaction_")
     val transaction: Transaction,
-    @Embedded
+    @Embedded(prefix = "restaurant_")
     val restaurant: Restaurant
 )

@@ -6,7 +6,7 @@ import androidx.room.Query
 @Dao
 interface RestaurantDao {
     @Query("SELECT * FROM restaurant")
-    suspend fun selectAll():ArrayList<Restaurant>
+    suspend fun selectAll():List<Restaurant>
 
     @Query("SELECT * FROM restaurant WHERE id= :id")
     suspend fun select(id:Int):Restaurant

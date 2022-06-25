@@ -11,7 +11,7 @@ import androidx.room.*
     ),
     ForeignKey(
         entity = Food::class,
-        parentColumns = ["food_id"],
+        parentColumns = ["id"],
         childColumns = ["food_id"],
         onDelete = ForeignKey.CASCADE
     )
@@ -26,9 +26,9 @@ data class Cart (
 )
 
 data class CartWithFood(
-    @Embedded
+    @Embedded(prefix="food_")
     var food:Food,
-    @Embedded
+    @Embedded(prefix="cart_")
     var cart:Cart
 )
 

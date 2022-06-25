@@ -8,8 +8,8 @@ interface CartDao {
     suspend fun insert(cart: Cart)
 
     @Query(
-        "SELECT food.*, cart.* FROM cart INNER JOIN food ON cart.food_id = food.food_id " +
-            "WHERE user_id= :user_id")
+        "SELECT food.id AS food_id, food.restaurant_id AS food_restaurant_id, food.name AS food_name, food.price AS food_price, food.photo_url AS food_photo_url, cart.user_id AS cart_user_id, cart.food_id AS cart_food_id, cart.quantity as cart_quantity FROM cart INNER JOIN food ON cart.food_id = food.id " +
+            "WHERE cart_user_id= :user_id")
     suspend fun select(user_id: Int): List<CartWithFood>
 
     @Query("UPDATE cart set quantity = :quantity WHERE user_id = :user_id AND food_id = :food_id")

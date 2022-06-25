@@ -1,6 +1,9 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController

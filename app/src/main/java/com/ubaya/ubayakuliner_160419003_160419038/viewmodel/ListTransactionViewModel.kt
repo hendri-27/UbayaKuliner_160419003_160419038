@@ -42,7 +42,7 @@ class ListTransactionViewModel(application: Application) : AndroidViewModel(appl
         }
     }
 
-    fun refreshByTransactionId(transactionId: Int) {
+    fun refreshByTransactionId(transactionId: String) {
         transactionForReviewLoadErrorLiveData.value = false
         transactionForReviewloadingLiveData.value = true
 

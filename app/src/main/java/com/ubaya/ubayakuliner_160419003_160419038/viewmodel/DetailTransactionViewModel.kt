@@ -29,7 +29,7 @@ class DetailTransactionViewModel(application: Application) : AndroidViewModel(ap
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    fun fetch(transactionId:Int) {
+    fun fetch(transactionId:String) {
         detailTransactionLoadErrorLiveData.value = false
         detailTransactionLoadingLiveData.value = true
         launch {
