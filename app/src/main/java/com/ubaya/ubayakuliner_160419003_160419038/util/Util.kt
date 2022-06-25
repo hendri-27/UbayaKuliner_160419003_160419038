@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.databinding.BindingAdapter
 import androidx.room.Room
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -25,6 +26,13 @@ fun buildDb(context: Context) =
 //        database.execSQL("ALTER TABLE `transaction` ADD COLUMN payment_method STRING DEFAULT 'Cash' NOT NULL")
 //    }
 //}
+
+@BindingAdapter("android:imageUrl", "android:progressBar")
+fun loadPhotoURL(view: ImageView, url: String?, pb: ProgressBar) {
+    url?.let {
+        view.loadImage(it, pb)
+    }
+}
 
 fun ImageView.loadImage(url:String?, progressBar: ProgressBar){
     Picasso.get()
