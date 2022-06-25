@@ -1,9 +1,6 @@
 package com.ubaya.ubayakuliner_160419003_160419038.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 
 @Entity(
@@ -26,4 +23,11 @@ data class Food(
     var photoURL:String?,
     @PrimaryKey(autoGenerate = true)
     val id:Int = 0
+)
+
+data class FoodWithCart(
+    @Embedded
+    var food: Food,
+    @Embedded
+    var cart: Cart?
 )

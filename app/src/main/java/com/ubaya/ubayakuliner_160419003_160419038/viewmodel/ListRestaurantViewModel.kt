@@ -20,7 +20,7 @@ import kotlin.coroutines.CoroutineContext
 
 class ListRestaurantViewModel(application: Application) : AndroidViewModel(application) ,
     CoroutineScope {
-    val restaurantLiveData = MutableLiveData<List<Restaurant>>()
+    val restaurantLiveData = MutableLiveData<ArrayList<Restaurant>>()
     val restaurantLoadErrorLiveData = MutableLiveData<Boolean>()
     val loadingLiveData = MutableLiveData<Boolean>()
     private var job = Job()

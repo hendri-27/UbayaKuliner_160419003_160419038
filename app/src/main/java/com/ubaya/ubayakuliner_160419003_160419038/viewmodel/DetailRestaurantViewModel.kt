@@ -10,9 +10,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.ubaya.ubayakuliner_160419003_160419038.model.Cart
-import com.ubaya.ubayakuliner_160419003_160419038.model.Food
-import com.ubaya.ubayakuliner_160419003_160419038.model.Restaurant
+import com.ubaya.ubayakuliner_160419003_160419038.model.*
 import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
 import com.ubaya.ubayakuliner_160419003_160419038.util.userId
 import kotlinx.coroutines.CoroutineScope
@@ -22,32 +20,20 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class DetailRestaurantViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
-    val foodLiveData = MutableLiveData<List<Food>>()
+    val foodLiveData = MutableLiveData<ArrayList<FoodWithCart>>()
     val foodLoadErrorLiveData = MutableLiveData<Boolean>()
     val foodLoadingLiveData = MutableLiveData<Boolean>()
-    val RestaurantLiveData = MutableLiveData<Restaurant>()
-    val RestaurantLoadErrorLiveData = MutableLiveData<Boolean>()
-    val RestaurantLoadingLiveData = MutableLiveData<Boolean>()
     private var job = Job()
 
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    fun fetchFood(restoId:Int) {
+    fun fetchFoodWithCart(restoId:Int) {
         foodLoadErrorLiveData.value = false
         foodLoadingLiveData.value = true
         launch {
             val db = buildDb(getApplication())
-            foodLiveData.value = db.foodDao().selectAll(restoId)
-        }
-    }
-
-    fun fetchRestaurant(resto_id: Int) {
-        RestaurantLoadErrorLiveData.value = false
-        RestaurantLoadingLiveData.value = true
-        launch {
-            val db = buildDb(getApplication())
-            RestaurantLiveData.value = db.restaurantDao().select(resto_id)
+            foodLiveData.value = db.foodDao().select(userId, restoId)
         }
     }
 
@@ -55,6 +41,21 @@ class DetailRestaurantViewModel(application: Application) : AndroidViewModel(app
         launch {
             val db = buildDb(getApplication())
             db.cartDao().insert(cart)
+        }
+    }
+
+
+    fun updateCart(food_id: Int, quantity: Int) {
+        launch {
+            val db = buildDb(getApplication())
+            db.cartDao().update(userId, food_id, quantity)
+        }
+    }
+
+    fun deleteCart(cart: Cart) {
+        launch {
+            val db = buildDb(getApplication())
+            db.cartDao().delete(cart)
         }
     }
 }

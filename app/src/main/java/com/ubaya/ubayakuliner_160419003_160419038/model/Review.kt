@@ -37,3 +37,10 @@ data class Review(
     @PrimaryKey(autoGenerate = true)
     val id:Int = 0
 )
+
+data class ReviewWithUser(
+    @Embedded
+    val review:Review,
+    @Embedded
+    val user:User
+)
