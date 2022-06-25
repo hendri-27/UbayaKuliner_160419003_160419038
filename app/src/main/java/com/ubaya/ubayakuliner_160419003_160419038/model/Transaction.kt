@@ -31,9 +31,9 @@ data class Transaction(
     var deliveryFee:Int,
     @ColumnInfo(name = "service_fee")
     var serviceFee:Int,
-    @ColumnInfo(name = "food_subtotal")
-    var foodSubtotal:Int,
-    @ColumnInfo(name = "grand_total")
+    @ColumnInfo(name = "subtotal")
+    var subtotal:Int,
+    @ColumnInfo(name = "grandtotal")
     var grandTotal:Int,
     var status:String,
     var rate:Float?,

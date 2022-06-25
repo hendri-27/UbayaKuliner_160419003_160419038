@@ -54,7 +54,7 @@ class DetailTransactionFragment : Fragment() {
 //                textDetailTransPaymentMethod.text = String.format("Rp%,d - %s", transaction.grandTotal, transaction.paymentMethod)
                 textDetailTransPaymentMethod.text = String.format("Rp%,d", transaction.grandTotal)
                 textDetailTransactionAddress.text = transaction.location
-                textDetailTransSubtotal.text = String.format("Rp%,d",transaction.foodSubtotal)
+                textDetailTransSubtotal.text = String.format("Rp%,d",transaction.subtotal)
                 textDetailTransDeliveryFee.text = String.format("Rp%,d",transaction.deliveryFee)
                 textDetailTransServiceFee.text = String.format("Rp%,d",transaction.serviceFee)
                 textDetailTransGrandtotal.text = String.format("Rp%,d",transaction.grandTotal)
