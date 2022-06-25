@@ -23,6 +23,9 @@ class DetailRestaurantViewModel(application: Application) : AndroidViewModel(app
     val foodLiveData = MutableLiveData<ArrayList<FoodWithCart>>()
     val foodLoadErrorLiveData = MutableLiveData<Boolean>()
     val foodLoadingLiveData = MutableLiveData<Boolean>()
+    val restaurantLiveData = MutableLiveData<Restaurant>()
+    val restaurantLoadErrorLiveData = MutableLiveData<Boolean>()
+    val restaurantLoadingLiveData = MutableLiveData<Boolean>()
     private var job = Job()
 
     override val coroutineContext: CoroutineContext
@@ -34,6 +37,15 @@ class DetailRestaurantViewModel(application: Application) : AndroidViewModel(app
         launch {
             val db = buildDb(getApplication())
             foodLiveData.value = ArrayList(db.foodDao().select(userId, restoId))
+        }
+    }
+
+    fun fetchRestaurant(resto_id: Int) {
+        restaurantLoadErrorLiveData.value = false
+        restaurantLoadingLiveData.value = true
+        launch {
+            val db = buildDb(getApplication())
+            restaurantLiveData.value = db.restaurantDao().select(resto_id)
         }
     }
 

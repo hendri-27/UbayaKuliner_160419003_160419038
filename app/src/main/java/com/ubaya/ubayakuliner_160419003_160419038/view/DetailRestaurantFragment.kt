@@ -34,17 +34,12 @@ class DetailRestaurantFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(DetailRestaurantViewModel::class.java)
 
 //        cartWithFoodListAdapter.viewModel = viewModel
-        val restaurant = DetailRestaurantFragmentArgs.fromBundle(requireArguments()).restaurant
-        viewModel.fetchFoodWithCart(restaurant.id)
-
-        textDetailRestoName.text = restaurant.name
-        textDetailRestoAddress.text = restaurant.address
-        textDetailRestoPhone.text = restaurant.phoneNumber
-        ratingBarReview.rating = restaurant.ratingTotal ?: 0.0f
-        textDetailRestoRating.text = "${restaurant.ratingTotal ?: "New"} (See Reviews)"
+        val restaurantId = DetailRestaurantFragmentArgs.fromBundle(requireArguments()).restaurantId
+        viewModel.fetchFoodWithCart(restaurantId)
+        viewModel.fetchRestaurant(restaurantId)
 
         cardReview.setOnClickListener {
-            val action = DetailRestaurantFragmentDirections.actionListReviewFragment(restaurant.id)
+            val action = DetailRestaurantFragmentDirections.actionListReviewFragment(restaurantId)
             Navigation.findNavController(it).navigate(action)
         }
         buttonCart.setOnClickListener {
@@ -79,6 +74,19 @@ class DetailRestaurantFragment : Fragment() {
                 scrollViewDetailResto.visibility = View.VISIBLE
                 buttonCart.visibility = View.VISIBLE
                 progressLoadDetailResto.visibility = View.GONE
+            }
+        }
+
+        viewModel.restaurantLiveData.observe(viewLifecycleOwner) {
+            if (it != null){
+                textNoDataDetailResto.visibility = View.GONE
+                textDetailRestoName.text = it.name
+                textDetailRestoAddress.text = it.address
+                textDetailRestoPhone.text = it.phoneNumber
+                ratingBarReview.rating = it.ratingTotal ?: 0.0f
+                textDetailRestoRating.text = "${it.ratingTotal ?: "New"} (See Reviews)"
+            }else {
+                textNoDataDetailResto.visibility = View.VISIBLE
             }
         }
     }

@@ -29,8 +29,8 @@
         android:label="Restaurant"
         tools:layout="@layout/fragment_detail_restaurant">
         <argument
-            android:name="restaurant"
-            app:argType="com.ubaya.ubayakuliner_160419003_160419038.model.Restaurant" />
+            android:name="restaurantId"
+            app:argType="integer" />
         <action
             android:id="@+id/actionListReviewFragment"
             app:destination="@id/listReviewFragment" />

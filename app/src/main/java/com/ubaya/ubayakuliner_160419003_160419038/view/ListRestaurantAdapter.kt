@@ -26,7 +26,7 @@ class ListRestaurantAdapter(val listRestaurant:ArrayList<Restaurant>) : Recycler
             textRestoName.text = restaurant.name
             textRatingTotal.text = (restaurant.ratingTotal ?: "New").toString()
             this.setOnClickListener {
-                val action = ListRestaurantFragmentDirections.actionDetailRestaurant(restaurant)
+                val action = ListRestaurantFragmentDirections.actionDetailRestaurant(restaurant.id)
                 Navigation.findNavController(it).navigate(action)
             }
             imageResto.loadImage("https://hendri-27.github.io/ubayakuliner_db/images"+restaurant.photoURL,progressLoadingRestoPhoto)
