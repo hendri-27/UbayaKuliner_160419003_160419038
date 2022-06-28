@@ -36,6 +36,7 @@ class ListCartViewModel(application: Application) : AndroidViewModel(application
             val db = buildDb(getApplication())
             cartLiveData.value = ArrayList(db.cartDao().select(userId))
         }
+        cartLoadingLiveData.value = false
     }
 
     fun update(food_id: Int, quantity: Int) {

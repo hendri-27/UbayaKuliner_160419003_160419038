@@ -1,11 +1,15 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentAddReviewBinding
 import com.ubaya.ubayakuliner_160419003_160419038.model.Review
@@ -22,7 +26,7 @@ import java.util.*
  * Use the [AddReviewFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AddReviewFragment : Fragment(), SubmitReviewListener {
+class AddReviewFragment : Fragment(), SubmitReviewListener,RatingBarListener {
     private lateinit var viewModelTransaction: ListTransactionViewModel
     private lateinit var viewModelReview: ListReviewViewModel
     private lateinit var dataBinding: FragmentAddReviewBinding
@@ -39,6 +43,7 @@ class AddReviewFragment : Fragment(), SubmitReviewListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         dataBinding.submitListener = this
+        dataBinding.ratingListener = this
         val transactionId = AddReviewFragmentArgs.fromBundle(requireArguments()).transactionId
 
         viewModelTransaction = ViewModelProvider(this).get(ListTransactionViewModel::class.java)
@@ -80,6 +85,16 @@ class AddReviewFragment : Fragment(), SubmitReviewListener {
     }
 
     override fun onButtonSubmitCLick(v: View) {
-        viewModelReview.insert(dataBinding.review)
+        if (dataBinding.review!!.message.isNotEmpty()){
+            viewModelReview.insert(dataBinding.review!!)
+            Navigation.findNavController(v).popBackStack()
+            Toast.makeText(v.context, "Success Add Review!", Toast.LENGTH_LONG).show()
+        }else{
+            Toast.makeText(v.context, "Please fill the feedback!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onRatingBarChange(v: View, rating: Float, btnSubmit: Button) {
+        btnSubmit.isEnabled = (rating != 0.0f)
     }
 }

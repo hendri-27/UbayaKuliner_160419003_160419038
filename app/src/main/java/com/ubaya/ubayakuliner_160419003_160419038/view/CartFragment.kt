@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_list_restaurant.*
  */
 class CartFragment : Fragment(), CheckoutListener{
     private lateinit var viewModel:ListCartViewModel
-    private val cartListAdapter = ListCartAdapter(arrayListOf(), this, viewModel)
+    private val cartListAdapter = ListCartAdapter(arrayListOf(), this)
     private lateinit var dataBinding: FragmentCartBinding
     var restaurantId = 0
 

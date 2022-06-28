@@ -32,6 +32,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         launch {
             val db = buildDb(getApplication())
             profileLiveData.value = db.userDao().select(userId)
+            profileLoadingLiveData.value = false
         }
     }
 
@@ -46,5 +47,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
             profileLiveData.value = db.userDao().select(userId)
         }
+        profileLoadingLiveData.value = false
     }
 }

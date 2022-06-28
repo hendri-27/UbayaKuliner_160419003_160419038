@@ -33,5 +33,6 @@ class ListRestaurantViewModel(application: Application) : AndroidViewModel(appli
             val db = buildDb(getApplication())
             restaurantLiveData.value = ArrayList(db.restaurantDao().selectAll())
         }
+        loadingLiveData.value =false
     }
 }

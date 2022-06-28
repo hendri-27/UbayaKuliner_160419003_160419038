@@ -81,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@{transWithResto.transaction.grandTotal}"
+                    android:text="@{@string/format_price(transWithResto.transaction.grandTotal)}"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/textTransactionRestoName"
                     app:layout_constraintTop_toBottomOf="@+id/textTransactionRestoName" />
@@ -124,9 +124,10 @@
                         android:id="@+id/buttonRate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{transWithResto.transaction.rate == null ? "Rate" : "Rated"}'
-                        android:enabled="@{!(transWithResto.transaction.rate == null)}"
-                        android:onClickListener='@{(v) -> transWithResto.transaction.status == "Ongoing" ? btnCompleteClickListener.onButtonCompleteClick() : transWithResto.transaction.rate == null ? btnRateClickListener.onButtonRateClick(v,transWithResto.transaction.id) : null}'
+                        android:text='@{transWithResto.transaction.status == "Ongoing" ? "Complete" : transWithResto.transaction.rate == null ? "Rate" : "Rated"}'
+                        android:enabled="@{transWithResto.transaction.rate == null}"
+                        android:tag="@{transWithResto.transaction.rate + ``}"
+                        android:onClickListener='@{(v) -> btnRateClickListener.onButtonRateClick(v,transWithResto.transaction.id,transWithResto.transaction.rate)}'
                         />
 
                 </LinearLayout>

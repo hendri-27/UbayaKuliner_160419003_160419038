@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +15,6 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.android.material.textfield.TextInputEditText
 import com.ubaya.ubayakuliner_160419003_160419038.R
-import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentCartBinding
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentCheckoutBinding
 import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
 import com.ubaya.ubayakuliner_160419003_160419038.model.DetailTransaction
@@ -39,7 +37,7 @@ import kotlin.random.Random
  * Use the [CheckoutFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CheckoutFragment : Fragment(), PlaceOrderListener, SpinnerPaymentListener {
+class CheckoutFragment : Fragment(), PlaceOrderListener{
     private lateinit var viewModelCheckout:CheckoutViewModel
     private lateinit var viewModelCart:ListCartViewModel
     private var serviceFee:Int = (0.1 * Random.nextInt(2000,10000)).toInt()
@@ -63,16 +61,17 @@ class CheckoutFragment : Fragment(), PlaceOrderListener, SpinnerPaymentListener 
         restaurantId = CheckoutFragmentArgs.fromBundle(requireArguments()).restaurantId
 
         dataBinding.placeOrderListener = this
-        dataBinding.spinnerListener = this
+//        dataBinding.spinnerListener = this
 
         viewModelCheckout = ViewModelProvider(this).get(CheckoutViewModel::class.java)
         viewModelCheckout.fetchUser()
         viewModelCheckout.fetchRestaurant(restaurantId)
         viewModelCart = ViewModelProvider(this).get(ListCartViewModel::class.java)
+        viewModelCart.refresh()
 
-//        val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrPaymentMethod)
-//        adapter.setDropDownViewResource(R.layout.myspinner_item_layout)
-//        spinnerPaymentMethod.adapter = adapter
+        val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrPaymentMethod)
+        adapter.setDropDownViewResource(R.layout.myspinner_item_layout)
+        spinnerPaymentMethod.adapter = adapter
 
         recViewCheckout.layoutManager = LinearLayoutManager(context)
         recViewCheckout.adapter = listCartAdapter
@@ -81,15 +80,15 @@ class CheckoutFragment : Fragment(), PlaceOrderListener, SpinnerPaymentListener 
     }
 
     private fun observeViewModel(){
-        viewModelCheckout.UserLiveData.observe(viewLifecycleOwner) {
+        viewModelCheckout.userLiveData.observe(viewLifecycleOwner) {
             dataBinding.user = it
 //            editCheckoutPhone.setText(it.phoneNumber)
 //            editCheckoutRecipientName.setText(it.name)
         }
-        viewModelCheckout.UserLoadErrorLiveData.observe(viewLifecycleOwner){
+        viewModelCheckout.userLoadErrorLiveData.observe(viewLifecycleOwner){
             textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE
         }
-        viewModelCheckout.UserLoadingLiveData.observe(viewLifecycleOwner){
+        viewModelCheckout.userLoadingLiveData.observe(viewLifecycleOwner){
             if (it){
                 scrollViewCheckout.visibility = View.GONE
                 cardViewCheckout.visibility = View.GONE
@@ -149,14 +148,14 @@ class CheckoutFragment : Fragment(), PlaceOrderListener, SpinnerPaymentListener 
             }
         }
 
-        viewModelCheckout.RestaurantLiveData.observe(viewLifecycleOwner) {
+        viewModelCheckout.restaurantLiveData.observe(viewLifecycleOwner) {
             dataBinding.restaurant = it
 //            textCheckoutRestoName.text = it.name
         }
-        viewModelCheckout.RestaurantLoadErrorLiveData.observe(viewLifecycleOwner){
+        viewModelCheckout.restaurantLoadErrorLiveData.observe(viewLifecycleOwner){
             textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE
         }
-        viewModelCheckout.RestaurantLoadingLiveData.observe(viewLifecycleOwner){
+        viewModelCheckout.restaurantLoadingLiveData.observe(viewLifecycleOwner){
             if (it){
                 scrollViewCheckout.visibility = View.GONE
                 cardViewCheckout.visibility = View.GONE
@@ -170,41 +169,52 @@ class CheckoutFragment : Fragment(), PlaceOrderListener, SpinnerPaymentListener 
     }
 
     override fun onButtonPlaceOrderClick(v: View, addressUser: TextInputEditText) {
-        val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
-        val currentDate = sdf.format(Date())
-        val id = UUID.randomUUID().toString().replace("-", "").uppercase()
-        var detailTransaction: ArrayList<DetailTransaction> = arrayListOf()
+        if (dataBinding.transaction!!.location.isNotEmpty()) {
+            val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
+            val currentDate = sdf.format(Date())
+            val id = UUID.randomUUID().toString().replace("-", "").uppercase()
+            var detailTransaction: ArrayList<DetailTransaction> = arrayListOf()
 
-        dataBinding.transaction.date = currentDate
-        dataBinding.transaction.id = id
+            dataBinding.transaction!!.date = currentDate
+            dataBinding.transaction!!.id = id
 
-        for(list in cartWithFood) {
-            detailTransaction.add(DetailTransaction(id, list.food.id, list.cart.qty, list.food.price))
-        }
-
-        viewModelCheckout.placeOrder(dataBinding.transaction, detailTransaction)
-
-        // For Notification
-        val deliveryDuration = Random.nextInt(10,15).toLong()
-
-        Toast.makeText(v.context, "Your order is on the way", Toast.LENGTH_LONG).show()
-
-        val workRequest = OneTimeWorkRequestBuilder<UbayaKulinerWorker>()
-            .setInitialDelay(deliveryDuration, TimeUnit.SECONDS)
-            .setInputData(
-                workDataOf(
-                    "title" to "Your food is arrived!",
-                    "message" to "Don't forget to wash your hand before eating. Enjoy your meal!"
+            for (list in cartWithFood) {
+                detailTransaction.add(
+                    DetailTransaction(
+                        id,
+                        list.food.id,
+                        list.cart.qty,
+                        list.food.price
+                    )
                 )
-            )
-            .build()
-        WorkManager.getInstance(requireContext()).enqueue(workRequest)
+            }
 
-        val action = CheckoutFragmentDirections.actionListTransaction()
-        Navigation.findNavController(v).navigate(action)
+            viewModelCheckout.placeOrder(dataBinding.transaction!!, detailTransaction)
+
+            // For Notification
+            val deliveryDuration = Random.nextInt(10, 15).toLong()
+
+            Toast.makeText(v.context, "Your order is on the way", Toast.LENGTH_LONG).show()
+
+            val workRequest = OneTimeWorkRequestBuilder<UbayaKulinerWorker>()
+                .setInitialDelay(deliveryDuration, TimeUnit.SECONDS)
+                .setInputData(
+                    workDataOf(
+                        "title" to "Your food is arrived!",
+                        "message" to "Don't forget to wash your hand before eating. Enjoy your meal!"
+                    )
+                )
+                .build()
+            WorkManager.getInstance(requireContext()).enqueue(workRequest)
+
+            val action = CheckoutFragmentDirections.actionListTransaction()
+            Navigation.findNavController(v).navigate(action)
+        }else{
+            Toast.makeText(v.context, "Please fill your delivery address!", Toast.LENGTH_LONG).show()
+        }
     }
 
-    override fun onSpinnerClick(parent: AdapterView<*>, v: View, position: Int, id: Int) {
-        parent.setSelection(position)
-    }
+//    override fun onSpinnerClick(parent: AdapterView<*>, v: View, position: Int, id: Int) {
+//        parent.setSelection(position)
+//    }
 }

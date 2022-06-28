@@ -38,6 +38,7 @@ class DetailRestaurantViewModel(application: Application) : AndroidViewModel(app
             val db = buildDb(getApplication())
             foodLiveData.value = ArrayList(db.foodDao().select(userId, restoId))
         }
+        foodLoadingLiveData.value = false
     }
 
     fun fetchRestaurant(resto_id: Int) {
@@ -47,6 +48,7 @@ class DetailRestaurantViewModel(application: Application) : AndroidViewModel(app
             val db = buildDb(getApplication())
             restaurantLiveData.value = db.restaurantDao().select(resto_id)
         }
+        restaurantLoadingLiveData.value = false
     }
 
     fun insertCart(cart: Cart) {

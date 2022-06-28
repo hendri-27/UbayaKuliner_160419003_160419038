@@ -38,13 +38,14 @@ class ListReviewViewModel(application: Application) : AndroidViewModel(applicati
             val db = buildDb(getApplication())
             reviewLiveData.value = ArrayList(db.reviewDao().select(restoId))
         }
+        reviewloadingLiveData.value = false
     }
 
     fun insert(review:Review){
         launch {
             val db = buildDb(getApplication())
             db.reviewDao().insert(review)
-
+            db.transactionDao().updateRate(review.transactionId,review.rating)
             db.restaurantDao().update(review.restaurantId, review.rating)
         }
     }

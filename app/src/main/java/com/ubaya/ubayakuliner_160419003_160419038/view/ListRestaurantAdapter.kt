@@ -1,5 +1,6 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ class ListRestaurantAdapter(val listRestaurant:ArrayList<Restaurant>) : Recycler
 //        val restaurant = listRestaurant[position]
         with(holder.view){
             restaurant = listRestaurant[position]
+
             cardClickListener = this@ListRestaurantAdapter
 //            textRestoName.text = restaurant.name
 //            textRatingTotal.text = (restaurant.ratingTotal ?: "New").toString()

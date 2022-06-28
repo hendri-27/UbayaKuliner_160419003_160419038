@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.FoodListItemBinding
@@ -18,17 +19,22 @@ import com.ubaya.ubayakuliner_160419003_160419038.model.FoodWithCart
 import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import com.ubaya.ubayakuliner_160419003_160419038.util.userId
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.DetailRestaurantViewModel
+import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.DetailTransactionViewModel
+import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListTransactionViewModel
 import kotlinx.android.synthetic.main.food_list_item.view.*
 
-class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, var viewModel: DetailRestaurantViewModel) : RecyclerView.Adapter<ListFoodAdapter.FoodViewHolder>(),
+class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, val parentView:DetailRestaurantFragment) : RecyclerView.Adapter<ListFoodAdapter.FoodViewHolder>(),
         ButtonAddCartListener, ButtonIncreaseFIRListener, ButtonDecreaseFIRListener
 {
     class FoodViewHolder(var view: FoodListItemBinding): RecyclerView.ViewHolder(view.root)
+
+    private lateinit var viewModel: DetailRestaurantViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = FoodListItemBinding.inflate(inflater, parent, false)
 
+        viewModel = ViewModelProvider(parentView).get(DetailRestaurantViewModel::class.java)
         return FoodViewHolder(view)
     }
 

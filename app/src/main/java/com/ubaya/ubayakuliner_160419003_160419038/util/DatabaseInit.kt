@@ -31,7 +31,7 @@ class DatabaseInit(application: Application)  : AndroidViewModel(application), C
             db.restaurantDao().insert(Restaurant("Sate Ayam Pak Farhan","Gunung Anyar Tengah Gang 8 No 42, Surabaya","0822563566231","/restaurants/sate-ayam-pakfarhan.jpg",null))
             db.restaurantDao().insert(Restaurant("Soto Ayam C.Kan Tenggilis","Jln. Tenggilis Raya Rungkut Mejoyo No.169","0815298566325","/restaurants/soto-ayam-ckan.jpg",null))
             db.restaurantDao().insert(Restaurant("Soto Ayam Mail, Tenggilis Mejoyo","Jl. Kendangsari No. 23, Tenggilis Mejoyo, Surabaya","08264531897555","/restaurants/soto-ayam-mail.jpg",null))
-            db.restaurantDao().insert(Restaurant("Soto Ayam Mail, Tenggilis Mejoyo","Perum Royal Paka, Blok F No. 5, Jl. Royal Paka, Gunung Anyar, Surabaya","0859465554357","/restaurants/bakso-royal.jpg",null))
+            db.restaurantDao().insert(Restaurant("Bakso Royal, Manyar","Perum Royal Paka, Blok F No. 5, Jl. Royal Paka, Gunung Anyar, Surabaya","0859465554357","/restaurants/bakso-royal.jpg",null))
             db.restaurantDao().insert(Restaurant("Haus!, Rungkut Madya","Jl. Rungkut Madya No. 81, Rungkut, Surabaya","0812564585232","/restaurants/haus!.jpg",null))
             db.restaurantDao().insert(Restaurant("LvMieUp, Bendul Merisi Jaya 6 No 5","Jl. Bendul Merisi Jaya 6 No 5, Bendulmerisi, Surabaya","08356426519564","/restaurants/lvmieup.jpg",null))
 
@@ -86,12 +86,12 @@ class DatabaseInit(application: Application)  : AndroidViewModel(application), C
                 DetailTransaction("1523552255224122444", 11, 1, 25410)
             ).toTypedArray())
             db.detailTransactionDao().insert(*listOf(
-                DetailTransaction("910856567581643351115", 11, 1, 25410)
+                DetailTransaction("5421315466433451", 11, 1, 25410)
             ).toTypedArray())
 
-            db.reviewDao().insert(Review(1,"910856567581643351115",1,3.0f,"Varian terbaru banget dari bakmi gm. Intinya ini pangsit goreng bakmi gm tapi kulitnya aja tanpa daging. Dibikin snack gitu. Terus dikasi bubuk truffle. Rasa pangsitnya emang khas bakmi gm banget. Kesukaan deh. Buat trufflenya oke sih cukup berasa tapi mang saya lebih suka pangsit goreng originalnya yg dicocol saus merahnya. Ini enak tapi ya trufflenya menurut saya tidak sampai oke banget rasanya. Ini harganya 43k. Dapetnya semangkok ga gede2 amat ae mangkoknya.","20-12-2021"))
-            db.reviewDao().insert(Review(1,"812521431513454664",2,5.0f,"bakmi gm sih udah tidak perlu diragukan lagi kelezatannya. siapa sih yang tidak kenal mie ini? selain mie ayam jamurnya yang kenyal, kamu juga harus beli pangsit gorengnya yang kerap menjadi menu favorit banyak orang yang datang :)","01-03-2021"))
-            db.reviewDao().insert(Review(3,"1523552255224122444",1,5.0f,"Jadi karna harus #dirumahaja jadi ya mesen makan lewat online. Mesen ayam geprek dan ayam geprek sambel ijo. Rasanya beuh endus beud enak lah pedesnya nagih gitu loh apalagi yg sambel ijo mantap","17-10-2021"))
+            db.reviewDao().insert(Review(1,"910856567581643351115",1,3.0f,"Varian terbaru banget dari bakmi gm. Intinya ini pangsit goreng bakmi gm tapi kulitnya aja tanpa daging. Dibikin snack gitu. Terus dikasi bubuk truffle. Rasa pangsitnya emang khas bakmi gm banget. Kesukaan deh. Buat trufflenya oke sih cukup berasa tapi mang saya lebih suka pangsit goreng originalnya yg dicocol saus merahnya. Ini enak tapi ya trufflenya menurut saya tidak sampai oke banget rasanya. Ini harganya 43k. Dapetnya semangkok ga gede2 amat ae mangkoknya.","2021-12-20 14:57"))
+            db.reviewDao().insert(Review(1,"812521431513454664",2,5.0f,"bakmi gm sih udah tidak perlu diragukan lagi kelezatannya. siapa sih yang tidak kenal mie ini? selain mie ayam jamurnya yang kenyal, kamu juga harus beli pangsit gorengnya yang kerap menjadi menu favorit banyak orang yang datang :)","2021-03-21 21:01"))
+            db.reviewDao().insert(Review(3,"1523552255224122444",1,5.0f,"Jadi karna harus #dirumahaja jadi ya mesen makan lewat online. Mesen ayam geprek dan ayam geprek sambel ijo. Rasanya beuh endus beud enak lah pedesnya nagih gitu loh apalagi yg sambel ijo mantap","2021-10-17 10:40"))
         }
     }
 }

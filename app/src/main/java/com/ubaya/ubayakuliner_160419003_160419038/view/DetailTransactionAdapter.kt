@@ -1,5 +1,6 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ class DetailTransactionAdapter(val listDetailTransaction:ArrayList<DetailTransac
     override fun onBindViewHolder(holder: DetailTransactionViewHolder, position: Int) {
         with(holder.view){
             detailTransWithFood = listDetailTransaction[position]
+            Log.d("yosua",detailTransWithFood.toString())
         }
 //        val detailTransaction = listDetailTransaction[position]
 //        val food = detailTransaction.food

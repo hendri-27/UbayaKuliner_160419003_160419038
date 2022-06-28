@@ -3,19 +3,24 @@ package com.ubaya.ubayakuliner_160419003_160419038.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentCheckoutBinding
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.TransactionListItemBinding
 import com.ubaya.ubayakuliner_160419003_160419038.model.TransactionWithRestaurant
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListTransactionViewModel
 
-class ListTransactionAdapter(val listTransaction:ArrayList<TransactionWithRestaurant>,val viewModel: ListTransactionViewModel) : RecyclerView.Adapter<ListTransactionAdapter.TransactionViewHolder>(),ButtonRateClickListener,ButtonCompleteClickListener,TransactionCardClickListener {
+class ListTransactionAdapter(val listTransaction:ArrayList<TransactionWithRestaurant>, val parentView:ListTransactionFragment) : RecyclerView.Adapter<ListTransactionAdapter.TransactionViewHolder>(),ButtonRateClickListener,ButtonCompleteClickListener,TransactionCardClickListener {
     class TransactionViewHolder(var view: TransactionListItemBinding) : RecyclerView.ViewHolder(view.root)
+
+    private lateinit var viewModel: ListTransactionViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = TransactionListItemBinding.inflate(inflater, parent, false)
 
+        viewModel = ViewModelProvider(parentView).get(ListTransactionViewModel::class.java)
         return TransactionViewHolder(view)
     }
 
@@ -26,7 +31,9 @@ class ListTransactionAdapter(val listTransaction:ArrayList<TransactionWithRestau
 
         with(holder.view) {
             transWithResto = listTransaction[position]
-
+            btnRateClickListener = this@ListTransactionAdapter
+            btnCompleteClickListener = this@ListTransactionAdapter
+            cardClickListener = this@ListTransactionAdapter
 //            textTransactionId.text = transaction.id
 //            textTransactionDate.text = transaction.date
 //            textTransactionRestoName.text = restaurant.name
@@ -64,9 +71,15 @@ class ListTransactionAdapter(val listTransaction:ArrayList<TransactionWithRestau
         notifyDataSetChanged()
     }
 
-    override fun onButtonRateClick(v: View, transId: String) {
-        val action = ListTransactionFragmentDirections.actionAddReviewFragment(transId)
-        Navigation.findNavController(v).navigate(action)
+    override fun onButtonRateClick(v: View, transId: String, rate: Float?) {
+        if (v.tag.toString() == "Ongoing"){
+            viewModel.updateStatus(transId)
+        }else{
+            if (rate == null){
+                val action = ListTransactionFragmentDirections.actionAddReviewFragment(transId)
+                Navigation.findNavController(v).navigate(action)
+            }
+        }
     }
 
     override fun onButtonCompleteClick(v: View, transId: String) {

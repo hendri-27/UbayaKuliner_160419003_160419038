@@ -20,4 +20,7 @@ interface TransactionDao {
 
     @Query("UPDATE `transaction` SET status = 'Completed'  WHERE `transaction`.id = :transaction_id")
     suspend fun updateStatus(transaction_id: String)
+
+    @Query("UPDATE `transaction` SET rate = :rate  WHERE `transaction`.id = :transaction_id")
+    suspend fun updateRate(transaction_id: String, rate:Float)
 }

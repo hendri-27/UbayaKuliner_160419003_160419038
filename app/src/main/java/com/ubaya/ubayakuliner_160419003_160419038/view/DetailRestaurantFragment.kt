@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_detail_restaurant.*
  */
 class DetailRestaurantFragment : Fragment(), ReviewRestaurantListener, OpenCartRestaurantListener {
     private lateinit var viewModel:DetailRestaurantViewModel
-    private val cartWithFoodListAdapter = ListFoodAdapter(arrayListOf(), viewModel)
+    private val cartWithFoodListAdapter = ListFoodAdapter(arrayListOf(), this)
     private lateinit var dataBinding: FragmentDetailRestaurantBinding
     var restaurantId = 0
 
@@ -41,7 +41,6 @@ class DetailRestaurantFragment : Fragment(), ReviewRestaurantListener, OpenCartR
         dataBinding.cardReviewListener = this
         dataBinding.openCartListener = this
 
-//        cartWithFoodListAdapter.viewModel = viewModel
         restaurantId = DetailRestaurantFragmentArgs.fromBundle(requireArguments()).restaurantId
         viewModel.fetchFoodWithCart(restaurantId)
         viewModel.fetchRestaurant(restaurantId)

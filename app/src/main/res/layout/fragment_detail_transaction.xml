@@ -104,14 +104,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Order Total + Payment Method"
+                    android:text="@{@string/format_price(transaction.grandTotal) + `+ Payment Method`}"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/textDetailTransRestoName"
                     app:layout_constraintStart_toStartOf="@+id/textDetailTransRestoName"
                     app:layout_constraintTop_toBottomOf="@+id/textDetailTransRestoName"
                     tools:layout_conversion_absoluteHeight="14dp"
                     tools:layout_conversion_absoluteWidth="395dp" />
-
 
                 <TextView
                     android:id="@+id/textView4"
@@ -172,7 +171,7 @@
                     android:id="@+id/textDetailTransSubtotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{transaction.subtotal}"
+                    android:text="@{@string/format_price(transaction.subtotal)}"
                     app:layout_constraintEnd_toEndOf="@+id/relativeLayout2"
                     app:layout_constraintTop_toTopOf="@+id/textView6" />
 
@@ -202,7 +201,7 @@
                     android:id="@+id/textDetailTransDeliveryFee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{transaction.deliveryFee}"
+                    android:text="@{@string/format_price(transaction.deliveryFee)}"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textDetailTransSubtotal"
@@ -222,7 +221,7 @@
                     android:id="@+id/textDetailTransServiceFee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{transaction.serviceFee}"
+                    android:text="@{@string/format_price(transaction.serviceFee)}"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textDetailTransSubtotal"
@@ -233,7 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@{transaction.grandTotal}"
+                    android:text="@{@string/format_price(transaction.grandTotal)}"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textDetailTransServiceFee"
                     app:layout_constraintTop_toBottomOf="@+id/textDetailTransServiceFee" />

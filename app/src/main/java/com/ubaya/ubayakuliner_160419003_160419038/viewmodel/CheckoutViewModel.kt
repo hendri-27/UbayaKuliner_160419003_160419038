@@ -1,14 +1,8 @@
 package com.ubaya.ubayakuliner_160419003_160419038.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
 import com.ubaya.ubayakuliner_160419003_160419038.model.DetailTransaction
 import com.ubaya.ubayakuliner_160419003_160419038.model.Restaurant
 import com.ubaya.ubayakuliner_160419003_160419038.model.Transaction
@@ -22,33 +16,35 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class CheckoutViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
-    val UserLiveData = MutableLiveData<User>()
-    val UserLoadErrorLiveData = MutableLiveData<Boolean>()
-    val UserLoadingLiveData = MutableLiveData<Boolean>()
-    val RestaurantLiveData = MutableLiveData<Restaurant>()
-    val RestaurantLoadErrorLiveData = MutableLiveData<Boolean>()
-    val RestaurantLoadingLiveData = MutableLiveData<Boolean>()
+    val userLiveData = MutableLiveData<User>()
+    val userLoadErrorLiveData = MutableLiveData<Boolean>()
+    val userLoadingLiveData = MutableLiveData<Boolean>()
+    val restaurantLiveData = MutableLiveData<Restaurant>()
+    val restaurantLoadErrorLiveData = MutableLiveData<Boolean>()
+    val restaurantLoadingLiveData = MutableLiveData<Boolean>()
     private var job = Job()
 
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
     fun fetchUser() {
-        UserLoadErrorLiveData.value = false
-        UserLoadingLiveData.value = true
+        userLoadErrorLiveData.value = false
+        userLoadingLiveData.value = true
         launch {
             val db = buildDb(getApplication())
-            UserLiveData.value = db.userDao().select(userId)
+            userLiveData.value = db.userDao().select(userId)
         }
+        userLoadingLiveData.value = false
     }
 
     fun fetchRestaurant(resto_id: Int) {
-        RestaurantLoadErrorLiveData.value = false
-        RestaurantLoadingLiveData.value = true
+        restaurantLoadErrorLiveData.value = false
+        restaurantLoadingLiveData.value = true
         launch {
             val db = buildDb(getApplication())
-            RestaurantLiveData.value = db.restaurantDao().select(resto_id)
+            restaurantLiveData.value = db.restaurantDao().select(resto_id)
         }
+        restaurantLoadingLiveData.value = false
     }
 
     fun placeOrder(transaction: Transaction, listDetailTransaction: ArrayList<DetailTransaction>) {

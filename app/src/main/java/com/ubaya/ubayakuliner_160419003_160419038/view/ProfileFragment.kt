@@ -27,7 +27,7 @@ import java.util.*
  * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickListener,SpinnerGenderClickListener {
+class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickListener {
     private lateinit var viewModel: ProfileViewModel
     private lateinit var dataBinding: FragmentProfileBinding
     private val myCalendar: Calendar = Calendar.getInstance()
@@ -44,17 +44,17 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrGender)
-//        adapter.setDropDownViewResource(R.layout.myspinner_item_layout)
-//        spinnerGender.adapter = adapter
+        val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrGender)
+        adapter.setDropDownViewResource(R.layout.myspinner_item_layout)
+        spinnerGender.adapter = adapter
         dataBinding.btnSaveClickListener = this
         dataBinding.calendarListener = this
-        dataBinding.spinnerListener = this
+//        dataBinding.spinnerListener = this
 
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         viewModel.fetch()
 
-        observeViewModel()
+        observeViewModel(adapter)
     }
 
     private fun updateLabel() {
@@ -63,12 +63,12 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
         textInputBOD.setText(dateFormat.format(myCalendar.time))
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel(adapter:ArrayAdapter<String>){
         viewModel.profileLiveData.observe(viewLifecycleOwner) {
             dataBinding.user = it
 //            textUsername.text = "Username : ${it.username}"
 //            textInputName.setText(it.name)
-//            spinnerGender.setSelection(adapter.getPosition(it.gender))
+            spinnerGender.setSelection(adapter.getPosition(it.gender))
 
             //Birth of Date
 //            val bod:List<String> = it.birthDate.split("-")
@@ -118,7 +118,7 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
         ).show()
     }
 
-    override fun onSpinnerClick(parent: AdapterView<*>, v: View, position: Int, id: Int) {
-        parent.setSelection(position)
-    }
+//    override fun onSpinnerClick(parent: AdapterView<*>, v: View, position: Int, id: Int) {
+//        parent.setSelection(position)
+//    }
 }

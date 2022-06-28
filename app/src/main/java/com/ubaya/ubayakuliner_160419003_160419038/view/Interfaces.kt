@@ -11,7 +11,7 @@ import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
 import com.ubaya.ubayakuliner_160419003_160419038.model.FoodWithCart
 
 interface ButtonRateClickListener {
-    fun onButtonRateClick(v:View,transId:String)
+    fun onButtonRateClick(v:View,transId:String,rate:Float?)
 }
 
 interface ButtonCompleteClickListener {
@@ -42,9 +42,9 @@ interface ButtonDecreaseFICListener {
     fun onButtonDecreaseCLick(v: View, btnIncrease: ImageView, quantity: TextView, obj: CartWithFood)
 }
 
-interface SpinnerGenderClickListener{
-    fun onSpinnerClick(parent:AdapterView<*>, v:View,position:Int,id:Int)
-}
+//interface SpinnerGenderClickListener{
+//    fun onSpinnerClick(parent:AdapterView<*>, v:View,position:Int,id:Int)
+//}
 
 interface ButtonAddCartListener {
     fun onButtonAddCartCLick(v: View, cardQty: CardView, obj: FoodWithCart)
@@ -69,10 +69,10 @@ interface CheckoutListener {
 interface PlaceOrderListener {
     fun onButtonPlaceOrderClick(v: View, addressUser: TextInputEditText)
 }
-
-interface SpinnerPaymentListener{
-    fun onSpinnerClick(parent:AdapterView<*>, v:View, position:Int, id:Int)
-}
+//
+//interface SpinnerPaymentListener{
+//    fun onSpinnerClick(parent:AdapterView<*>, v:View, position:Int, id:Int)
+//}
 
 interface ReviewRestaurantListener {
     fun onCardReviewClick(v: View)
@@ -80,4 +80,8 @@ interface ReviewRestaurantListener {
 
 interface OpenCartRestaurantListener {
     fun onButtonCartClick(v: View)
+}
+
+interface RatingBarListener{
+    fun onRatingBarChange(v:View,rating:Float,btnSubmit:Button)
 }

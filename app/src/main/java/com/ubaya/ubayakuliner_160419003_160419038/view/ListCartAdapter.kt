@@ -8,26 +8,30 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.CartListItemBinding
 import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
 import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
+import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.DetailRestaurantViewModel
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListCartViewModel
 import kotlinx.android.synthetic.main.cart_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_cart.*
 
-class ListCartAdapter(val listCartWithFood:ArrayList<CartWithFood>, val viewParent:CartFragment,
-val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartViewHolder>(),
+class ListCartAdapter(val listCartWithFood:ArrayList<CartWithFood>, val parentView:CartFragment) : RecyclerView.Adapter<ListCartAdapter.CartViewHolder>(),
         ButtonIncreaseFICListener, ButtonDecreaseFICListener
 {
     class CartViewHolder(var view: CartListItemBinding): RecyclerView.ViewHolder(view.root)
+
+    private lateinit var viewModel: ListCartViewModel
     private var subTotal:Int=0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = CartListItemBinding.inflate(inflater, parent, false)
 
+        viewModel = ViewModelProvider(parentView).get(ListCartViewModel::class.java)
         return CartViewHolder(view)
     }
 
@@ -115,7 +119,7 @@ val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartVie
 
         if (v.isEnabled){
             subTotal += obj.food.price
-            viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
+            parentView.textCartSubtotal.text = String.format("Rp%,d", subTotal)
             viewModel.update(obj.food.id, qty)
             obj.cart.qty = qty
         }
@@ -129,8 +133,8 @@ val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartVie
             notifyDataSetChanged()
 
             if (itemCount == 0){
-                viewParent.textNoDataListCart.visibility = View.VISIBLE
-                viewParent.cardViewCheckout.visibility = View.GONE
+                parentView.textNoDataListCart.visibility = View.VISIBLE
+                parentView.cardViewCheckout.visibility = View.GONE
             }
         } else {
             viewModel.update(obj.food.id, qty)
@@ -144,6 +148,6 @@ val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartVie
             }
         }
         subTotal -= obj.food.price
-        viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
+        parentView.textCartSubtotal.text = String.format("Rp%,d", subTotal)
     }
 }
