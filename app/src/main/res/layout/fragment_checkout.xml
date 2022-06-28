@@ -19,6 +19,10 @@
         <variable
             name="placeOrderListener"
             type="com.ubaya.ubayakuliner_160419003_160419038.view.PlaceOrderListener" />
+
+        <variable
+            name="spinnerListener"
+            type="com.ubaya.ubayakuliner_160419003_160419038.view.SpinnerPaymentListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -283,6 +287,7 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
+                    android:onItemSelected="@{(parent,v,position,id) -> spinnerListener.onSpinnerClick(parent,v,position,id)}"
                     app:layout_constraintEnd_toEndOf="@+id/relativeLayout3"
                     app:layout_constraintStart_toEndOf="@+id/textView10"
                     app:layout_constraintTop_toTopOf="@+id/textView10" />

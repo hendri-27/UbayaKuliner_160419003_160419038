@@ -34,7 +34,6 @@ interface CalendarClickListener{
     fun onCalendarClick(v:View)
 }
 
-
 interface ButtonIncreaseFICListener {
     fun onButtonIncreaseCLick(v: View, quantity: TextView, obj: CartWithFood)
 }
@@ -69,6 +68,10 @@ interface CheckoutListener {
 
 interface PlaceOrderListener {
     fun onButtonPlaceOrderClick(v: View, addressUser: TextInputEditText)
+}
+
+interface SpinnerPaymentListener{
+    fun onSpinnerClick(parent:AdapterView<*>, v:View, position:Int, id:Int)
 }
 
 interface ReviewRestaurantListener {

@@ -55,6 +55,11 @@
         <argument
             android:name="restaurantId"
             app:argType="integer" />
+        <action
+            android:id="@+id/actionListTransaction"
+            app:destination="@id/itemHistory"
+            app:popUpTo="@id/itemHistory"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/itemCart"
