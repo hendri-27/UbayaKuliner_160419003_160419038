@@ -2,15 +2,14 @@ package com.ubaya.ubayakuliner_160419003_160419038.util
 
 import android.content.Context
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.databinding.BindingAdapter
 import androidx.room.Room
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.model.UbayaKulinerDatabase
+import kotlinx.android.synthetic.main.fragment_profile.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,6 +50,15 @@ fun updateDate(view: EditText, birthDate:String?) {
 
         view.setText(dateFormat.format(myCalendar.time))
     }
+}
+
+@BindingAdapter("android:spinnerItem")
+fun createSpinnerItem(view: Spinner){
+    val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrGender)
+    adapter.setDropDownViewResource(R.layout.myspinner_item_layout)
+    view.adapter = adapter
+
+    view.setSelection(adapter.getPosition(view.tag.toString()))
 }
 
 fun ImageView.loadImage(url:String?, progressBar: ProgressBar){

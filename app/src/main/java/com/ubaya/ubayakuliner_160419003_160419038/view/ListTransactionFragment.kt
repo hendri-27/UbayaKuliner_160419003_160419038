@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_list_transaction.refreshLayout
  */
 class ListTransactionFragment : Fragment() {
     private lateinit var viewModel: ListTransactionViewModel
-    private val transactionListAdapter = ListTransactionAdapter(arrayListOf())
+    private val transactionListAdapter = ListTransactionAdapter(arrayListOf(),viewModel)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

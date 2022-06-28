@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -26,7 +27,7 @@ import java.util.*
  * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickListener {
+class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickListener,SpinnerGenderClickListener {
     private lateinit var viewModel: ProfileViewModel
     private lateinit var dataBinding: FragmentProfileBinding
     private val myCalendar: Calendar = Calendar.getInstance()
@@ -43,16 +44,17 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrGender)
-        adapter.setDropDownViewResource(R.layout.myspinner_item_layout)
-        spinnerGender.adapter = adapter
+//        val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrGender)
+//        adapter.setDropDownViewResource(R.layout.myspinner_item_layout)
+//        spinnerGender.adapter = adapter
         dataBinding.btnSaveClickListener = this
         dataBinding.calendarListener = this
+        dataBinding.spinnerListener = this
 
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         viewModel.fetch()
 
-        observeViewModel(adapter)
+        observeViewModel()
     }
 
     private fun updateLabel() {
@@ -61,12 +63,12 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
         textInputBOD.setText(dateFormat.format(myCalendar.time))
     }
 
-    private fun observeViewModel(adapter:ArrayAdapter<String>){
+    private fun observeViewModel(){
         viewModel.profileLiveData.observe(viewLifecycleOwner) {
             dataBinding.user = it
 //            textUsername.text = "Username : ${it.username}"
-            textInputName.setText(it.name)
-            spinnerGender.setSelection(adapter.getPosition(it.gender))
+//            textInputName.setText(it.name)
+//            spinnerGender.setSelection(adapter.getPosition(it.gender))
 
             //Birth of Date
 //            val bod:List<String> = it.birthDate.split("-")
@@ -76,10 +78,10 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
 //            updateLabel()
             //
 
-            textInputPhone.setText(it.phoneNumber)
-            textInputEmail.setText(it.email)
-            textInputPassword.setText(it.password)
-            imageProfile.loadImage(it.photoURL,progressBarProfilePhoto)
+//            textInputPhone.setText(it.phoneNumber)
+//            textInputEmail.setText(it.email)
+//            textInputPassword.setText(it.password)
+//            imageProfile.loadImage(it.photoURL,progressBarProfilePhoto)
         }
 
         viewModel.profileLoadErrorLiveData.observe(viewLifecycleOwner) {
@@ -98,7 +100,7 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
     }
 
     override fun onButtonSaveChangeClick(v: View) {
-        TODO("Not yet implemented")
+        viewModel.update(textInputName.text.toString(),spinnerGender.selectedItem.toString(),textInputBOD.text.toString(),textInputPhone.text.toString(),textInputEmail.text.toString(),textInputPassword.text.toString())
     }
 
     override fun onCalendarClick(v: View) {
@@ -114,5 +116,9 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
             myCalendar[Calendar.MONTH],
             myCalendar[Calendar.DAY_OF_MONTH]
         ).show()
+    }
+
+    override fun onSpinnerClick(parent: AdapterView<*>, v: View, position: Int, id: Int) {
+        parent.setSelection(position)
     }
 }
