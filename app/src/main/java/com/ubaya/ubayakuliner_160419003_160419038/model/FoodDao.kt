@@ -1,10 +1,15 @@
 package com.ubaya.ubayakuliner_160419003_160419038.model
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
 interface FoodDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(food: Food)
+
     @Query("SELECT * FROM food WHERE id= :id")
     suspend fun select(id:Int):Food
 

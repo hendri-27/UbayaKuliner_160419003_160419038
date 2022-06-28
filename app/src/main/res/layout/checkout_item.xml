@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardCheckoutDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="8dp">
+
+                <ImageView
+                    android:id="@+id/imageDetailCheckoutFood"
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:imageUrl='@{"https://hendri-27.github.io/ubayakuliner_db/images"+detailTransWithFood.food.photoURL}'
+                    android:progressBar="@{progressLoadingDetailTransFoodPhoto}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/progressLoadingDetailCheckoutFoodPhoto"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageDetailCheckoutFood"
+                    app:layout_constraintEnd_toEndOf="@+id/imageDetailCheckoutFood"
+                    app:layout_constraintStart_toStartOf="@+id/imageDetailCheckoutFood"
+                    app:layout_constraintTop_toTopOf="@+id/imageDetailCheckoutFood" />
+
+                <TextView
+                    android:id="@+id/textDetailCheckoutQty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text='@{detailTransWithFood.qty + " x"}'
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/imageDetailCheckoutFood"
+                    app:layout_constraintTop_toTopOf="@+id/imageDetailCheckoutFood" />
+
+                <TextView
+                    android:id="@+id/textDetailCheckoutFoodName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@{detailTransWithFood.food.name}"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/textDetailCheckoutFoodPrice"
+                    app:layout_constraintStart_toEndOf="@+id/textDetailCheckoutQty"
+                    app:layout_constraintTop_toTopOf="@+id/textDetailCheckoutQty" />
+
+                <TextView
+                    android:id="@+id/textDetailCheckoutFoodPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{@string/format_price(detailTransWithFood.food.price)}"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textDetailCheckoutFoodName" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
