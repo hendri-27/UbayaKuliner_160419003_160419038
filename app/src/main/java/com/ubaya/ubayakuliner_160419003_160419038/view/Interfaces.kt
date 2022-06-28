@@ -2,8 +2,15 @@ package com.ubaya.ubayakuliner_160419003_160419038.view
 
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import com.google.android.material.textfield.TextInputEditText
+import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
+import com.ubaya.ubayakuliner_160419003_160419038.model.FoodWithCart
 
-interface ButttonRateClickListener {
+interface ButtonRateClickListener {
     fun onButtonRateClick(v:View,transId:String)
 }
 
@@ -28,16 +35,46 @@ interface CalendarClickListener{
 }
 
 
+interface ButtonIncreaseFICListener {
+    fun onButtonIncreaseCLick(v: View, quantity: TextView, obj: CartWithFood)
+}
 
-
-
-
-
-
-
-
+interface ButtonDecreaseFICListener {
+    fun onButtonDecreaseCLick(v: View, btnIncrease: ImageView, quantity: TextView, obj: CartWithFood)
+}
 
 interface SpinnerGenderClickListener{
     fun onSpinnerClick(parent:AdapterView<*>, v:View,position:Int,id:Int)
 }
 
+interface ButtonAddCartListener {
+    fun onButtonAddCartCLick(v: View, cardQty: CardView, obj: FoodWithCart)
+}
+
+interface ButtonIncreaseFIRListener {
+    fun onButtonIncreaseCLick(v: View, btnIncrease: ImageView, obj: FoodWithCart)
+}
+
+interface ButtonDecreaseFIRListener {
+    fun onButtonDecreaseCLick(v: View, btnIncrease: ImageView, btnAddCart: Button, cardQty: CardView, obj: FoodWithCart)
+}
+
+interface SubmitReviewListener {
+    fun onButtonSubmitCLick(v: View)
+}
+
+interface CheckoutListener {
+    fun onButtonCheckoutClick(v: View)
+}
+
+interface PlaceOrderListener {
+    fun onButtonPlaceOrderClick(v: View, addressUser: TextInputEditText)
+}
+
+interface ReviewRestaurantListener {
+    fun onCardReviewClick(v: View)
+}
+
+interface OpenCartRestaurantListener {
+    fun onButtonCartClick(v: View)
+}

@@ -38,7 +38,7 @@ data class Transaction(
     var grandTotal:Int,
     var status:String,
     var rate:Float?,
-    val id:String
+    var id:String
 )
 
 data class TransactionWithRestaurant(

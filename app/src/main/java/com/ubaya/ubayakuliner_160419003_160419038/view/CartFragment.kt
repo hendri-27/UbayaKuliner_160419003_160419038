@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubaya.ubayakuliner_160419003_160419038.R
+import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentCartBinding
 import com.ubaya.ubayakuliner_160419003_160419038.util.userId
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListCartViewModel
 import kotlinx.android.synthetic.main.fragment_cart.*
@@ -21,20 +22,25 @@ import kotlinx.android.synthetic.main.fragment_list_restaurant.*
  * Use the [CartFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CartFragment : Fragment() {
+class CartFragment : Fragment(), CheckoutListener{
     private lateinit var viewModel:ListCartViewModel
     private val cartListAdapter = ListCartAdapter(arrayListOf(), this, viewModel)
-    private var restaurantId = 0
+    private lateinit var dataBinding: FragmentCartBinding
+    var restaurantId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart, container, false)
+        dataBinding = FragmentCartBinding.inflate(inflater, container, false)
+
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        dataBinding.checkoutListener = this
+
         viewModel = ViewModelProvider(this).get(ListCartViewModel::class.java)
         viewModel.refresh()
 
@@ -67,13 +73,13 @@ class CartFragment : Fragment() {
                 textCartSubtotal.text = String.format("Rp%,d", subTotal)
                 cartListAdapter.setSubTotal(subTotal)
 
-                val restaurantId = it[0].food.restaurantId
-                buttonCartCheckout.setOnClickListener {
-                    val action = CartFragmentDirections.actionCheckoutFragment(restaurantId)
-                    Navigation.findNavController(it).navigate(action)
-                }
+                restaurantId = it[0].food.restaurantId
+//                buttonCartCheckout.setOnClickListener {
+//                    val action = CartFragmentDirections.actionCheckoutFragment(restaurantId)
+//                    Navigation.findNavController(it).navigate(action)
+//                }
             }else {
-                textNoDataListCart.visibility = View.VISIBLE
+                dataBinding.textNoDataListCart.visibility = View.VISIBLE
             }
         }
         viewModel.cartLoadErrorLiveData.observe(viewLifecycleOwner){
@@ -91,5 +97,10 @@ class CartFragment : Fragment() {
                 progressLoadCart.visibility = View.GONE
             }
         }
+    }
+
+    override fun onButtonCheckoutClick(v: View) {
+        val action = CartFragmentDirections.actionCheckoutFragment(restaurantId)
+        Navigation.findNavController(v).navigate(action)
     }
 }

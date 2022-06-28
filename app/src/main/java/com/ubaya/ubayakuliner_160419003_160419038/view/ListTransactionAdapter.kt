@@ -5,16 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.TransactionListItemBinding
-import com.ubaya.ubayakuliner_160419003_160419038.model.Transaction
 import com.ubaya.ubayakuliner_160419003_160419038.model.TransactionWithRestaurant
-import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
-import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListCartViewModel
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListTransactionViewModel
-import kotlinx.android.synthetic.main.transaction_list_item.view.*
 
-class ListTransactionAdapter(val listTransaction:ArrayList<TransactionWithRestaurant>,val viewModel: ListTransactionViewModel) : RecyclerView.Adapter<ListTransactionAdapter.TransactionViewHolder>(),ButttonRateClickListener,ButtonCompleteClickListener,TransactionCardClickListener {
+class ListTransactionAdapter(val listTransaction:ArrayList<TransactionWithRestaurant>,val viewModel: ListTransactionViewModel) : RecyclerView.Adapter<ListTransactionAdapter.TransactionViewHolder>(),ButtonRateClickListener,ButtonCompleteClickListener,TransactionCardClickListener {
     class TransactionViewHolder(var view: TransactionListItemBinding) : RecyclerView.ViewHolder(view.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {

@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubaya.ubayakuliner_160419003_160419038.R
+import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentDetailRestaurantBinding
+import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentDetailTransactionBinding
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.DetailTransactionViewModel
 import kotlinx.android.synthetic.main.fragment_detail_restaurant.*
 import kotlinx.android.synthetic.main.fragment_detail_transaction.*
@@ -20,13 +22,16 @@ import kotlinx.android.synthetic.main.fragment_detail_transaction.*
 class DetailTransactionFragment : Fragment() {
     private lateinit var viewModel: DetailTransactionViewModel
     private val detailFoodListAdapter = DetailTransactionAdapter(arrayListOf())
+    private lateinit var dataBinding: FragmentDetailTransactionBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_transaction, container, false)
+        dataBinding = FragmentDetailTransactionBinding.inflate(inflater, container, false)
+
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,17 +54,17 @@ class DetailTransactionFragment : Fragment() {
         viewModel.detailTransactionLiveData.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()){
                 textNoDataDetailTransaction.visibility = View.GONE
-                val transaction = it[0].transaction
+                dataBinding.transaction = it[0].transaction
 
 //                textDetailTransPaymentMethod.text = String.format("Rp%,d - %s", transaction.grandTotal, transaction.paymentMethod)
-                textDetailTransPaymentMethod.text = String.format("Rp%,d", transaction.grandTotal)
-                textDetailTransactionAddress.text = transaction.location
-                textDetailTransSubtotal.text = String.format("Rp%,d",transaction.subtotal)
-                textDetailTransDeliveryFee.text = String.format("Rp%,d",transaction.deliveryFee)
-                textDetailTransServiceFee.text = String.format("Rp%,d",transaction.serviceFee)
-                textDetailTransGrandtotal.text = String.format("Rp%,d",transaction.grandTotal)
-                textDetailTransactionID.text = transaction.id.toString()
-                textDetailTransactionDate.text = transaction.date
+//                textDetailTransPaymentMethod.text = String.format("Rp%,d", transaction.grandTotal)
+//                textDetailTransactionAddress.text = transaction.location
+//                textDetailTransSubtotal.text = String.format("Rp%,d",transaction.subtotal)
+//                textDetailTransDeliveryFee.text = String.format("Rp%,d",transaction.deliveryFee)
+//                textDetailTransServiceFee.text = String.format("Rp%,d",transaction.serviceFee)
+//                textDetailTransGrandtotal.text = String.format("Rp%,d",transaction.grandTotal)
+//                textDetailTransactionID.text = transaction.id
+//                textDetailTransactionDate.text = transaction.date
 //                textDetailTransactionMethodPayment.text = transaction.paymentMethod
 
                 detailFoodListAdapter.updateListDetailTransaction(it)

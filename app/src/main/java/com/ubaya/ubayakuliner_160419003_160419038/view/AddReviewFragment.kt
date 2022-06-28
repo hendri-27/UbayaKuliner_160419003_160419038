@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.ubaya.ubayakuliner_160419003_160419038.R
+import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentAddReviewBinding
 import com.ubaya.ubayakuliner_160419003_160419038.model.Review
 import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListReviewViewModel
@@ -21,19 +22,23 @@ import java.util.*
  * Use the [AddReviewFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AddReviewFragment : Fragment() {
+class AddReviewFragment : Fragment(), SubmitReviewListener {
     private lateinit var viewModelTransaction: ListTransactionViewModel
     private lateinit var viewModelReview: ListReviewViewModel
+    private lateinit var dataBinding: FragmentAddReviewBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_review, container, false)
+        dataBinding =  FragmentAddReviewBinding.inflate(inflater, container, false)
+
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        dataBinding.submitListener = this
         val transactionId = AddReviewFragmentArgs.fromBundle(requireArguments()).transactionId
 
         viewModelTransaction = ViewModelProvider(this).get(ListTransactionViewModel::class.java)
@@ -45,26 +50,24 @@ class AddReviewFragment : Fragment() {
 
     private fun observeViewModel(){
         viewModelTransaction.transactionForReviewLiveData.observe(viewLifecycleOwner) {
-            val transaction = it.transaction
-            val restaurant = it.restaurant
+            val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
+            val currentDate = sdf.format(Date())
 
-            textReviewNameRestaurant.text = restaurant.name
-            imageReviewRestoPhoto.loadImage(
-                "https://hendri-27.github.io/ubayakuliner_db/images"+restaurant.photoURL,progressLoadingReviewRestoPhoto
-            )
+            dataBinding.transactionWithRestaurant = it
+            dataBinding.review = Review(it.restaurant.id, it.transaction.id, it.transaction.userId, 0f, "", currentDate)
 
-            ratingBarAddReview.setOnRatingBarChangeListener { ratingBar, fl, b ->
-                buttonSubmit.isEnabled = true
-            }
+//            textReviewNameRestaurant.text = restaurant.name
+//            imageReviewRestoPhoto.loadImage(
+//                "https://hendri-27.github.io/ubayakuliner_db/images"+restaurant.photoURL,progressLoadingReviewRestoPhoto
+//            )
 
-            buttonSubmit.setOnClickListener{
-                val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
-                val currentDate = sdf.format(Date())
+//            ratingBarAddReview.setOnRatingBarChangeListener { ratingBar, fl, b ->
+//                buttonSubmit.isEnabled = true
+//            }
 
-                val review = Review(restaurant.id, transaction.id, transaction.userId, ratingBarAddReview.rating,
-                editUserReview.text.toString(), currentDate)
-                viewModelReview.insert(review)
-            }
+//            buttonSubmit.setOnClickListener{
+//                viewModelReview.insert(dataBinding.review)
+//            }
         }
 
         viewModelTransaction.transactionForReviewloadingLiveData.observe(viewLifecycleOwner){
@@ -74,5 +77,9 @@ class AddReviewFragment : Fragment() {
                 progressLoadingReviewRestoPhoto.visibility = View.GONE
             }
         }
+    }
+
+    override fun onButtonSubmitCLick(v: View) {
+        viewModelReview.insert(dataBinding.review)
     }
 }

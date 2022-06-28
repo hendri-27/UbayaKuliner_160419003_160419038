@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubaya.ubayakuliner_160419003_160419038.R
+import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentDetailRestaurantBinding
 import com.ubaya.ubayakuliner_160419003_160419038.model.Cart
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.DetailRestaurantViewModel
 import kotlinx.android.synthetic.main.fragment_detail_restaurant.*
@@ -18,34 +19,41 @@ import kotlinx.android.synthetic.main.fragment_detail_restaurant.*
  * Use the [DetailRestaurantFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DetailRestaurantFragment : Fragment() {
+class DetailRestaurantFragment : Fragment(), ReviewRestaurantListener, OpenCartRestaurantListener {
     private lateinit var viewModel:DetailRestaurantViewModel
     private val cartWithFoodListAdapter = ListFoodAdapter(arrayListOf(), viewModel)
+    private lateinit var dataBinding: FragmentDetailRestaurantBinding
+    var restaurantId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_restaurant, container, false)
+        dataBinding = FragmentDetailRestaurantBinding.inflate(inflater, container, false)
+
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(DetailRestaurantViewModel::class.java)
 
+        dataBinding.cardReviewListener = this
+        dataBinding.openCartListener = this
+
 //        cartWithFoodListAdapter.viewModel = viewModel
-        val restaurantId = DetailRestaurantFragmentArgs.fromBundle(requireArguments()).restaurantId
+        restaurantId = DetailRestaurantFragmentArgs.fromBundle(requireArguments()).restaurantId
         viewModel.fetchFoodWithCart(restaurantId)
         viewModel.fetchRestaurant(restaurantId)
 
-        cardReview.setOnClickListener {
-            val action = DetailRestaurantFragmentDirections.actionListReviewFragment(restaurantId)
-            Navigation.findNavController(it).navigate(action)
-        }
-        buttonCart.setOnClickListener {
-            val action = DetailRestaurantFragmentDirections.actionItemCart()
-            Navigation.findNavController(it).navigate(action)
-        }
+//        cardReview.setOnClickListener {
+//            val action = DetailRestaurantFragmentDirections.actionListReviewFragment(restaurantId)
+//            Navigation.findNavController(it).navigate(action)
+//        }
+//        buttonCart.setOnClickListener {
+//            val action = DetailRestaurantFragmentDirections.actionItemCart()
+//            Navigation.findNavController(it).navigate(action)
+//        }
         recFoodView.layoutManager = LinearLayoutManager(context)
         recFoodView.adapter = cartWithFoodListAdapter
 
@@ -79,15 +87,26 @@ class DetailRestaurantFragment : Fragment() {
 
         viewModel.restaurantLiveData.observe(viewLifecycleOwner) {
             if (it != null){
+                dataBinding.restaurant = it
                 textNoDataDetailResto.visibility = View.GONE
-                textDetailRestoName.text = it.name
-                textDetailRestoAddress.text = it.address
-                textDetailRestoPhone.text = it.phoneNumber
-                ratingBarReview.rating = it.ratingTotal ?: 0.0f
-                textDetailRestoRating.text = "${it.ratingTotal ?: "New"} (See Reviews)"
+//                textDetailRestoName.text = it.name
+//                textDetailRestoAddress.text = it.address
+//                textDetailRestoPhone.text = it.phoneNumber
+//                ratingBarReview.rating = it.ratingTotal ?: 0.0f
+//                textDetailRestoRating.text = "${it.ratingTotal ?: "New"} (See Reviews)"
             }else {
                 textNoDataDetailResto.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onCardReviewClick(v: View) {
+        val action = DetailRestaurantFragmentDirections.actionListReviewFragment(restaurantId)
+        Navigation.findNavController(v).navigate(action)
+    }
+
+    override fun onButtonCartClick(v: View) {
+        val action = DetailRestaurantFragmentDirections.actionItemCart()
+        Navigation.findNavController(v).navigate(action)
     }
 }

@@ -9,7 +9,7 @@
             type="com.ubaya.ubayakuliner_160419003_160419038.model.TransactionWithRestaurant" />
         <variable
             name="btnRateClickListener"
-            type="com.ubaya.ubayakuliner_160419003_160419038.view.ButttonRateClickListener" />
+            type="com.ubaya.ubayakuliner_160419003_160419038.view.ButtonRateClickListener" />
         <variable
             name="btnCompleteClickListener"
             type="com.ubaya.ubayakuliner_160419003_160419038.view.ButtonCompleteClickListener" />

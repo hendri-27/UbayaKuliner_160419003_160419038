@@ -5,8 +5,12 @@ import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.R
+import com.ubaya.ubayakuliner_160419003_160419038.databinding.CartListItemBinding
 import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
 import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListCartViewModel
@@ -14,63 +18,71 @@ import kotlinx.android.synthetic.main.cart_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_cart.*
 
 class ListCartAdapter(val listCartWithFood:ArrayList<CartWithFood>, val viewParent:CartFragment,
-val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartViewHolder>() {
-    class CartViewHolder(var view: View): RecyclerView.ViewHolder(view)
+val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartViewHolder>(),
+        ButtonIncreaseFICListener, ButtonDecreaseFICListener
+{
+    class CartViewHolder(var view: CartListItemBinding): RecyclerView.ViewHolder(view.root)
     private var subTotal:Int=0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.cart_list_item, parent, false)
+        val view = CartListItemBinding.inflate(inflater, parent, false)
 
         return CartViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
-        val cartWithFood = listCartWithFood[position]
-        val cart = cartWithFood.cart
-        val food = cartWithFood.food
+        with(holder.view) {
+            cartWithFood = listCartWithFood[position]
+            increaseListener = this@ListCartAdapter
+            decreaseListener = this@ListCartAdapter
+        }
 
-        with(holder.view){
-            textCartFoodName.text = food.name
-            textCartFoodPrice.text = String.format("Rp%,d", food.price)
-            textQtyCartFoodCounter.text = cart.qty.toString()
-            imageCartFood.loadImage("https://hendri-27.github.io/ubayakuliner_db/images"+food.photoURL,progressLoadingCartFoodPhoto)
+//        val cartWithFood = listCartWithFood[position]
+//        val cart = cartWithFood.cart
+//        val food = cartWithFood.food
 
-            buttonDecreaseFIC.setOnClickListener {
-                val qty = Integer.parseInt(textQtyCartFoodCounter.text.toString()) - 1
+//        with(holder.view){
+//            textCartFoodName.text = food.name
+//            textCartFoodPrice.text = String.format("Rp%,d", food.price)
+//            textQtyCartFoodCounter.text = cart.qty.toString()
+//            imageCartFood.loadImage("https://hendri-27.github.io/ubayakuliner_db/images"+food.photoURL,progressLoadingCartFoodPhoto)
 
-                if (qty <= 0){
-                    viewModel.delete(cart)
-                    notifyDataSetChanged()
+//            buttonDecreaseFIC.setOnClickListener {
+//                val qty = Integer.parseInt(textQtyCartFoodCounter.text.toString()) - 1
+//
+//                if (qty <= 0){
+//                    viewModel.delete(cart)
+//                    notifyDataSetChanged()
+//
+//                    if (itemCount == 0){
+//                        viewParent.textNoDataListCart.visibility = View.VISIBLE
+//                        viewParent.cardViewCheckout.visibility = View.GONE
+//                    }
+//                }else {
+//                    viewModel.update(food.id, qty)
+//                    textQtyCartFoodCounter.text = qty.toString()
+//
+//                    if (!buttonIncreaseFIC.isEnabled){
+//                        buttonIncreaseFIC.isEnabled = true
+//                        buttonIncreaseFIC.setColorFilter(
+//                            Color.parseColor("#DC5959"),
+//                            PorterDuff.Mode.MULTIPLY)
+//                    }
+//                }
+//                subTotal -= food.price
+//                viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
+//            }
 
-                    if (itemCount == 0){
-                        viewParent.textNoDataListCart.visibility = View.VISIBLE
-                        viewParent.cardViewCheckout.visibility = View.GONE
-                    }
-                }else {
-                    viewModel.update(food.id, qty)
-                    textQtyCartFoodCounter.text = qty.toString()
-
-                    if (!buttonIncreaseFIC.isEnabled){
-                        buttonIncreaseFIC.isEnabled = true
-                        buttonIncreaseFIC.setColorFilter(
-                            Color.parseColor("#DC5959"),
-                            PorterDuff.Mode.MULTIPLY)
-                    }
-                }
-                subTotal -= food.price
-                viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
-            }
-
-            buttonIncreaseFIC.setOnClickListener {
-                val qty = Integer.parseInt(textQtyCartFoodCounter.text.toString()) + 1
-
-                if (buttonIncreaseFIC.isEnabled){
-                    subTotal += food.price
-                    viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
-                    viewModel.update(food.id, qty)
-                    textQtyCartFoodCounter.text = qty.toString()
-                }
+//            buttonIncreaseFIC.setOnClickListener {
+//                val qty = Integer.parseInt(textQtyCartFoodCounter.text.toString()) + 1
+//
+//                if (buttonIncreaseFIC.isEnabled){
+//                    subTotal += food.price
+//                    viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
+//                    viewModel.update(food.id, qty)
+//                    textQtyCartFoodCounter.text = qty.toString()
+//                }
 
 //                if (qty >= cart.food.stock){
 //                    buttonIncreaseFIC.isEnabled = false
@@ -78,8 +90,8 @@ val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartVie
 //                        ContextCompat.getColor(context, android.R.color.darker_gray),
 //                        PorterDuff.Mode.MULTIPLY)
 //                }
-            }
-        }
+//            }
+//        }
     }
 
     override fun getItemCount() = listCartWithFood.size
@@ -96,5 +108,42 @@ val viewModel: ListCartViewModel) : RecyclerView.Adapter<ListCartAdapter.CartVie
         listCartWithFood.clear()
         listCartWithFood.addAll(newListCart)
         notifyDataSetChanged()
+    }
+
+    override fun onButtonIncreaseCLick(v: View, quantity: TextView, obj: CartWithFood) {
+        val qty = Integer.parseInt(quantity.text.toString()) + 1
+
+        if (v.isEnabled){
+            subTotal += obj.food.price
+            viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
+            viewModel.update(obj.food.id, qty)
+            obj.cart.qty = qty
+        }
+    }
+
+    override fun onButtonDecreaseCLick(v: View, btnIncrease: ImageView, quantity: TextView, obj: CartWithFood) {
+        val qty = Integer.parseInt(quantity.text.toString()) - 1
+
+        if (qty <= 0){
+            viewModel.delete(obj.cart)
+            notifyDataSetChanged()
+
+            if (itemCount == 0){
+                viewParent.textNoDataListCart.visibility = View.VISIBLE
+                viewParent.cardViewCheckout.visibility = View.GONE
+            }
+        } else {
+            viewModel.update(obj.food.id, qty)
+            obj.cart.qty = qty
+
+            if (!btnIncrease.isEnabled){
+                btnIncrease.isEnabled = true
+                btnIncrease.setColorFilter(
+                    Color.parseColor("#DC5959"),
+                    PorterDuff.Mode.MULTIPLY)
+            }
+        }
+        subTotal -= obj.food.price
+        viewParent.textCartSubtotal.text = String.format("Rp%,d", subTotal)
     }
 }
