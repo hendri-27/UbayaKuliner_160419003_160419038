@@ -2,6 +2,7 @@ package com.ubaya.ubayakuliner_160419003_160419038.util
 
 import android.content.Context
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.databinding.BindingAdapter
@@ -10,6 +11,8 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.model.UbayaKulinerDatabase
+import java.text.SimpleDateFormat
+import java.util.*
 
 val DB_NAME = "ubayakulinerdb"
 const val userId = 1
@@ -28,9 +31,25 @@ fun buildDb(context: Context) =
 //}
 
 @BindingAdapter("android:imageUrl", "android:progressBar")
-fun loadPhotoURL(view: ImageView, url: String?, pb: ProgressBar) {
-    url?.let {
+fun loadPhotoURL(view: ImageView, imageUrl: String?, pb: ProgressBar) {
+    imageUrl?.let {
         view.loadImage(it, pb)
+    }
+}
+
+@BindingAdapter("android:birthDate")
+fun updateDate(view: EditText, birthDate:String?) {
+    birthDate?.let{
+        val myFormat = "dd-MM-yyyy"
+        val dateFormat = SimpleDateFormat(myFormat, Locale.US)
+        var myCalendar: Calendar = Calendar.getInstance()
+
+        val bod:List<String> = it.split("-")
+        myCalendar[Calendar.YEAR] = Integer.parseInt(bod[2])
+        myCalendar[Calendar.MONTH] = Integer.parseInt(bod[1])
+        myCalendar[Calendar.DAY_OF_MONTH] = Integer.parseInt(bod[0])
+
+        view.setText(dateFormat.format(myCalendar.time))
     }
 }
 
