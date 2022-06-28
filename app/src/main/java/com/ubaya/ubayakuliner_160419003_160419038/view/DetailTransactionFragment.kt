@@ -1,5 +1,6 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -48,6 +49,7 @@ class DetailTransactionFragment : Fragment() {
         recViewDetailTrans.adapter = detailFoodListAdapter
 
         observeViewModel()
+
     }
 
     private fun observeViewModel(){
