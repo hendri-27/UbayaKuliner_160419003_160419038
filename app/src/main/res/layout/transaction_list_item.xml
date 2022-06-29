@@ -116,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text='@{transWithResto.transaction.status}'
+                        android:text='@={transWithResto.transaction.status}'
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -124,10 +124,10 @@
                         android:id="@+id/buttonRate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{transWithResto.transaction.status == "Ongoing" ? "Complete" : transWithResto.transaction.rate == null ? "Rate" : "Rated"}'
+                        android:text='@{(transWithResto.transaction.status.equals("Ongoing")) ?  "Complete" : (transWithResto.transaction.rate == null ? "Rate" : "Rated")}'
                         android:enabled="@{transWithResto.transaction.rate == null}"
-                        android:tag="@{transWithResto.transaction.rate + ``}"
-                        android:onClickListener='@{(v) -> btnRateClickListener.onButtonRateClick(v,transWithResto.transaction.id,transWithResto.transaction.rate)}'
+                        android:tag="@{transWithResto.transaction.status}"
+                        android:onClickListener='@{(v) -> btnRateClickListener.onButtonRateClick(v,transWithResto.transaction)}'
                         />
 
                 </LinearLayout>

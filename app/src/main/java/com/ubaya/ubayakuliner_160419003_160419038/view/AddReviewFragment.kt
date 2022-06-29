@@ -87,6 +87,7 @@ class AddReviewFragment : Fragment(), SubmitReviewListener,RatingBarListener {
     override fun onButtonSubmitCLick(v: View) {
         if (dataBinding.review!!.message.isNotEmpty()){
             viewModelReview.insert(dataBinding.review!!)
+
             Navigation.findNavController(v).popBackStack()
             Toast.makeText(v.context, "Success Add Review!", Toast.LENGTH_LONG).show()
         }else{

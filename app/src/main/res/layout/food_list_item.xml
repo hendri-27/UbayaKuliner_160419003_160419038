@@ -139,7 +139,7 @@
                             android:layout_marginEnd="05dp"
                             android:gravity="center"
                             android:maxLength="3"
-                            android:text="@={``+foodWithCart.cart.qty}"
+                            android:text="@={foodWithCart.cart.qty+``}"
                             android:textColor="@color/black" />
 
                         <ImageView
@@ -148,6 +148,7 @@
                             android:layout_height="wrap_content"
                             android:enabled="@{foodWithCart.cart.qty == 199? false : true}"
                             android:qtyCart="@{foodWithCart.cart.qty}"
+                            android:onClick="@{(view) -> increaseListener.onButtonIncreaseCLick(view, buttonIncreaseFIR, foodWithCart)}"
                             app:srcCompat="@drawable/ic_baseline_add_box_24" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

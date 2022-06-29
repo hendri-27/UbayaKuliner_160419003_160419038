@@ -2,6 +2,7 @@ package com.ubaya.ubayakuliner_160419003_160419038.view
 
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,7 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, val parentVi
             decreaseListener = this@ListFoodAdapter
         }
 //        val foodWithCart = listFoodWithCart[position]
-        with(holder.view){
+//        with(holder.view){
 //            textFoodName.text = foodWithCart.food.name
 //            textFoodPrice.text = String.format("Rp%,d", foodWithCart.food.price)
 
@@ -107,7 +108,7 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, val parentVi
 //                    }
 //                }
 //            }
-        }
+//        }
     }
 
     override fun getItemCount() = listFoodWithCart.size
@@ -140,7 +141,8 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, val parentVi
         val newCart = Cart(userId, obj.food.id,1)
         obj.cart = newCart
         addNewCart(newCart)
-        obj.cart!!.qty = 1
+        Log.d("tes",listFoodWithCart.toString())
+//        obj.cart!!.qty = 1
     }
 
     override fun onButtonIncreaseCLick(v: View, btnIncrease: ImageView, obj: FoodWithCart) {
@@ -165,6 +167,7 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, val parentVi
     ) {
         if (obj.cart!!.qty - 1 > 0){
             obj.cart!!.qty -= 1
+            updateCart(obj.food.id, obj.cart!!.qty)
             if (!btnIncrease.isEnabled){
                 btnIncrease.isEnabled = true
                 btnIncrease.setColorFilter(
@@ -172,7 +175,7 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, val parentVi
                     PorterDuff.Mode.MULTIPLY)
             }
         }else{
-            val deletedCart = obj.cart!!
+            val deletedCart = obj.cart!!.copy()
             obj.cart = null
             deleteCart(deletedCart)
 

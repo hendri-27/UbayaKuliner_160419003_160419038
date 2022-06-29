@@ -9,9 +9,10 @@ import androidx.cardview.widget.CardView
 import com.google.android.material.textfield.TextInputEditText
 import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
 import com.ubaya.ubayakuliner_160419003_160419038.model.FoodWithCart
+import com.ubaya.ubayakuliner_160419003_160419038.model.Transaction
 
 interface ButtonRateClickListener {
-    fun onButtonRateClick(v:View,transId:String,rate:Float?)
+    fun onButtonRateClick(v:View,trans:Transaction)
 }
 
 interface ButtonCompleteClickListener {

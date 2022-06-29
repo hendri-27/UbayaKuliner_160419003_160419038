@@ -72,7 +72,7 @@ class DatabaseInit(application: Application)  : AndroidViewModel(application), C
             db.transactionDao().insert(Transaction(1,1,"2022-03-15 17:51","Jl. Rungkut Mapan Indah No. 58, Surabaya",1000,3000,65456,69456,"Completed",1.0f,"910856567581643351115"))
             db.transactionDao().insert(Transaction(2,1,"2022-03-16 15:10","Jl. Jemur Sari Indah No. 100, Surabaya",3000,3000,65456,71456,"Completed",2.0f,"812521431513454664"))
             db.transactionDao().insert(Transaction(1,3,"2022-04-01 10:50","Jl. Menur Tengah No. 3, Surabaya",500,3000,25410,28910,"Completed",3.0f,"1523552255224122444"))
-            db.transactionDao().insert(Transaction(1,3,"2022-03-02 08:00","Jl. Tunjungan Indah No. IX/2, Surabaya",500,3000,25410,28910,"Completed",null,"5421315466433451"))
+            db.transactionDao().insert(Transaction(1,3,"2022-03-02 08:00","Jl. Tunjungan Indah No. IX/2, Surabaya",500,3000,25410,28910,"Ongoing",null,"5421315466433451"))
 
             db.detailTransactionDao().insert(*listOf(
                 DetailTransaction("910856567581643351115", 1, 1, 32728),

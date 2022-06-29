@@ -58,7 +58,7 @@ class ListTransactionViewModel(application: Application) : AndroidViewModel(appl
         launch {
             val db = buildDb(getApplication())
             db.transactionDao().updateStatus(transactionId)
-            transactionForReviewLiveData.value = db.transactionDao().selectTransactionWithRestaurant(transactionId)
+//            transactionForReviewLiveData.value = db.transactionDao().selectTransactionWithRestaurant(transactionId)
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentCheckoutBinding
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.TransactionListItemBinding
+import com.ubaya.ubayakuliner_160419003_160419038.model.Transaction
 import com.ubaya.ubayakuliner_160419003_160419038.model.TransactionWithRestaurant
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListTransactionViewModel
 
@@ -71,12 +73,14 @@ class ListTransactionAdapter(val listTransaction:ArrayList<TransactionWithRestau
         notifyDataSetChanged()
     }
 
-    override fun onButtonRateClick(v: View, transId: String, rate: Float?) {
-        if (v.tag.toString() == "Ongoing"){
-            viewModel.updateStatus(transId)
+    override fun onButtonRateClick(v: View, trans:Transaction) {
+        if (v.tag.equals("Ongoing")){
+            trans.status = "Completed"
+            viewModel.updateStatus(trans.id)
+            notifyDataSetChanged()
         }else{
-            if (rate == null){
-                val action = ListTransactionFragmentDirections.actionAddReviewFragment(transId)
+            if (trans.rate == null){
+                val action = ListTransactionFragmentDirections.actionAddReviewFragment(trans.id)
                 Navigation.findNavController(v).navigate(action)
             }
         }

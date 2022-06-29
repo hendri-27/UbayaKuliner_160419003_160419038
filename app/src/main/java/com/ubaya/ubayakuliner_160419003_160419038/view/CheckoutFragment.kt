@@ -110,7 +110,7 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
             }
             val grandTotal = subTotal + deliveryFee + serviceFee
 
-            dataBinding.transaction = Transaction(userId, restaurantId, "", "", deliveryFee, serviceFee, subTotal, grandTotal, "Ongoing ", null,"")
+            dataBinding.transaction = Transaction(userId, restaurantId, "", "", deliveryFee, serviceFee, subTotal, grandTotal, "Ongoing", null,"")
 
 //            textDetailOrderSubtotal.text = String.format("Rp%,d", subTotal)
 //            textDetailOrderDeliveryFee.text = String.format("Rp%,d", deliveryFee)
