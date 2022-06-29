@@ -3,6 +3,7 @@ package com.ubaya.ubayakuliner_160419003_160419038.view
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,10 +47,9 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = ArrayAdapter(view.context, R.layout.myspinner_layout, arrGender)
         adapter.setDropDownViewResource(R.layout.myspinner_item_layout)
-        spinnerGender.adapter = adapter
+        dataBinding.spinnerGender.adapter = adapter
         dataBinding.btnSaveClickListener = this
         dataBinding.calendarListener = this
-//        dataBinding.spinnerListener = this
 
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         viewModel.fetch()
@@ -60,28 +60,13 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
     private fun updateLabel() {
         val myFormat = "dd-MM-yyyy"
         val dateFormat = SimpleDateFormat(myFormat, Locale.US)
-        textInputBOD.setText(dateFormat.format(myCalendar.time))
+        dataBinding.textInputBOD.setText(dateFormat.format(myCalendar.time))
     }
 
     private fun observeViewModel(adapter:ArrayAdapter<String>){
         viewModel.profileLiveData.observe(viewLifecycleOwner) {
             dataBinding.user = it
-//            textUsername.text = "Username : ${it.username}"
-//            textInputName.setText(it.name)
             spinnerGender.setSelection(adapter.getPosition(it.gender))
-
-            //Birth of Date
-//            val bod:List<String> = it.birthDate.split("-")
-//            myCalendar[Calendar.YEAR] = Integer.parseInt(bod[2])
-//            myCalendar[Calendar.MONTH] = Integer.parseInt(bod[1])
-//            myCalendar[Calendar.DAY_OF_MONTH] = Integer.parseInt(bod[0])
-//            updateLabel()
-            //
-
-//            textInputPhone.setText(it.phoneNumber)
-//            textInputEmail.setText(it.email)
-//            textInputPassword.setText(it.password)
-//            imageProfile.loadImage(it.photoURL,progressBarProfilePhoto)
         }
 
         viewModel.profileLoadErrorLiveData.observe(viewLifecycleOwner) {
@@ -100,7 +85,13 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
     }
 
     override fun onButtonSaveChangeClick(v: View) {
-        viewModel.update(textInputName.text.toString(),spinnerGender.selectedItem.toString(),textInputBOD.text.toString(),textInputPhone.text.toString(),textInputEmail.text.toString(),textInputPassword.text.toString())
+        viewModel.update(
+            dataBinding.user!!.name,
+            dataBinding.spinnerGender.selectedItem.toString(),
+            dataBinding.user!!.birthDate,
+            dataBinding.user!!.phoneNumber,
+            dataBinding.user!!.email,
+            dataBinding.user!!.password)
     }
 
     override fun onCalendarClick(v: View) {
@@ -117,8 +108,4 @@ class ProfileFragment : Fragment(), ButtonProfileCLickListener, CalendarClickLis
             myCalendar[Calendar.DAY_OF_MONTH]
         ).show()
     }
-
-//    override fun onSpinnerClick(parent: AdapterView<*>, v: View, position: Int, id: Int) {
-//        parent.setSelection(position)
-//    }
 }

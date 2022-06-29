@@ -104,7 +104,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="@{@string/format_price(transaction.grandTotal) + `+ Payment Method`}"
+                    android:text="@{@string/format_price(transaction.grandTotal) + `+ ` + transaction.paymentMethod}"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/textDetailTransRestoName"
                     app:layout_constraintStart_toStartOf="@+id/textDetailTransRestoName"
@@ -322,7 +322,7 @@
                     android:id="@+id/textDetailTransactionMethodPayment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Value Method Payment"
+                    android:text="@{transaction.paymentMethod}"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/textView14"
                     app:layout_constraintTop_toTopOf="@+id/textView19" />

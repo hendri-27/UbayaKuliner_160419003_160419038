@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -40,6 +41,7 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, val parentVi
     }
 
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
+        Log.d("tess",listFoodWithCart.toString())
         with(holder.view){
             foodWithCart = listFoodWithCart[position]
             addToCartListener = this@ListFoodAdapter
@@ -135,14 +137,19 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, val parentVi
     }
 
     override fun onButtonAddCartCLick(v: View, cardQty: CardView, obj: FoodWithCart) {
-        cardQty.visibility = View.VISIBLE
-        v.visibility = View.GONE
+        val validated = viewModel.validateCart(obj.food.restaurantId)
 
-        val newCart = Cart(userId, obj.food.id,1)
-        obj.cart = newCart
-        addNewCart(newCart)
-        Log.d("tes",listFoodWithCart.toString())
+        if (validated){
+            cardQty.visibility = View.VISIBLE
+            v.visibility = View.GONE
+            val newCart = Cart(userId, obj.food.id,1)
+            obj.cart = newCart
+            addNewCart(newCart)
+
 //        obj.cart!!.qty = 1
+        }else{
+            Toast.makeText(v.context,"You already have another restaurant food in your cart!",Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onButtonIncreaseCLick(v: View, btnIncrease: ImageView, obj: FoodWithCart) {

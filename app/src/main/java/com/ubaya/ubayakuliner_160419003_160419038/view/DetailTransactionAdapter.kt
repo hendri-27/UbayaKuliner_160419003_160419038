@@ -26,7 +26,6 @@ class DetailTransactionAdapter(val listDetailTransaction:ArrayList<DetailTransac
     override fun onBindViewHolder(holder: DetailTransactionViewHolder, position: Int) {
         with(holder.view){
             detailTransWithFood = listDetailTransaction[position]
-            Log.d("yosua",detailTransWithFood.toString())
         }
 //        val detailTransaction = listDetailTransaction[position]
 //        val food = detailTransaction.food

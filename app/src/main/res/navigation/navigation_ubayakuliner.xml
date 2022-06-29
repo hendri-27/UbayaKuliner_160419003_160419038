@@ -56,9 +56,9 @@
             android:name="restaurantId"
             app:argType="integer" />
         <action
-            android:id="@+id/actionListTransaction"
-            app:destination="@id/itemHistory"
-            app:popUpTo="@id/itemHistory"
+            android:id="@+id/actionHome"
+            app:destination="@id/itemExplore"
+            app:popUpTo="@id/itemExplore"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment

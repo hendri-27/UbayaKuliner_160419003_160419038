@@ -26,8 +26,8 @@ data class Transaction(
     val restaurantId:Int,
     var date:String,
     var location:String,
-//    @SerializedName("payment_method")
-//    var paymentMethod:String,
+    @ColumnInfo(name="payment_method", defaultValue = "Cash")
+    var paymentMethod:String,
     @ColumnInfo(name = "delivery_fee")
     var deliveryFee:Int,
     @ColumnInfo(name = "service_fee")

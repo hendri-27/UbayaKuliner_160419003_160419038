@@ -136,8 +136,7 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:inputType="date"
-                        android:birthDate="@{user.birthDate}"
+                        android:text="@={user.birthDate}"
                         android:onClickListener="@{(v) -> calendarListener.onCalendarClick(v)}"
                         />
                 </com.google.android.material.textfield.TextInputLayout>

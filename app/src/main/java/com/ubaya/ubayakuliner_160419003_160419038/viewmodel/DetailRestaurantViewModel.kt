@@ -13,10 +13,7 @@ import com.google.gson.reflect.TypeToken
 import com.ubaya.ubayakuliner_160419003_160419038.model.*
 import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
 import com.ubaya.ubayakuliner_160419003_160419038.util.userId
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class DetailRestaurantViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
@@ -49,6 +46,25 @@ class DetailRestaurantViewModel(application: Application) : AndroidViewModel(app
             restaurantLiveData.value = db.restaurantDao().select(resto_id)
         }
         restaurantLoadingLiveData.value = false
+    }
+
+    fun validateCart(restoId:Int):Boolean{
+        var userCart:ArrayList<CartWithFood> = ArrayList()
+
+        runBlocking {
+            launch {
+                val db = buildDb(getApplication())
+                userCart = ArrayList(db.cartDao().select(userId))
+            }
+        }
+
+        var validate = true
+        if (userCart.isNotEmpty()){
+            if (userCart[0].food.restaurantId != restoId){
+                validate = false
+            }
+        }
+        return validate
     }
 
     fun insertCart(cart: Cart) {

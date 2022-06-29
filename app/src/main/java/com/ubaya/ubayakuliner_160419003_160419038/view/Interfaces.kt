@@ -1,10 +1,7 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.cardview.widget.CardView
 import com.google.android.material.textfield.TextInputEditText
 import com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood
@@ -68,7 +65,7 @@ interface CheckoutListener {
 }
 
 interface PlaceOrderListener {
-    fun onButtonPlaceOrderClick(v: View, addressUser: TextInputEditText)
+    fun onButtonPlaceOrderClick(v: View, addressUser: TextInputEditText, spinnerPayment:Spinner)
 }
 //
 //interface SpinnerPaymentListener{

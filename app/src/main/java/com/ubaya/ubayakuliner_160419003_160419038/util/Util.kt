@@ -12,6 +12,8 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.ubaya.ubayakuliner_160419003_160419038.R
@@ -37,14 +39,14 @@ val arrPaymentMethod:Array<String> = arrayOf("Cash")
 
 fun buildDb(context: Context) =
     Room.databaseBuilder(context, UbayaKulinerDatabase::class.java, DB_NAME)
-//        .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+        .addMigrations(MIGRATION_1_2)
         .build()
 
-//val MIGRATION_1_2 = object : Migration(1, 2) {
-//    override fun migrate(database: SupportSQLiteDatabase) {
-//        database.execSQL("ALTER TABLE `transaction` ADD COLUMN payment_method STRING DEFAULT 'Cash' NOT NULL")
-//    }
-//}
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE `transaction` ADD COLUMN payment_method TEXT DEFAULT 'Cash' NOT NULL")
+    }
+}
 
 @BindingAdapter("android:imageUrl", "android:progressBar")
 fun loadPhotoURL(view: ImageView, imageUrl: String?, pb: ProgressBar) {
@@ -53,21 +55,21 @@ fun loadPhotoURL(view: ImageView, imageUrl: String?, pb: ProgressBar) {
     }
 }
 
-@BindingAdapter("android:birthDate")
-fun updateDate(view: EditText, birthDate:String?) {
-    birthDate?.let{
-        val myFormat = "dd-MM-yyyy"
-        val dateFormat = SimpleDateFormat(myFormat, Locale.US)
-        var myCalendar: Calendar = Calendar.getInstance()
-
-        val bod:List<String> = it.split("-")
-        myCalendar[Calendar.YEAR] = Integer.parseInt(bod[2])
-        myCalendar[Calendar.MONTH] = Integer.parseInt(bod[1])-1
-        myCalendar[Calendar.DAY_OF_MONTH] = Integer.parseInt(bod[0])
-
-        view.setText(dateFormat.format(myCalendar.time))
-    }
-}
+//@BindingAdapter("android:birthDate")
+//fun updateDate(view: EditText, birthDate:String?) {
+//    birthDate?.let{
+//        val myFormat = "dd-MM-yyyy"
+//        val dateFormat = SimpleDateFormat(myFormat, Locale.US)
+//        var myCalendar: Calendar = Calendar.getInstance()
+//
+//        val bod:List<String> = it.split("-")
+//        myCalendar[Calendar.YEAR] = Integer.parseInt(bod[2])
+//        myCalendar[Calendar.MONTH] = Integer.parseInt(bod[1])-1
+//        myCalendar[Calendar.DAY_OF_MONTH] = Integer.parseInt(bod[0])
+//
+//        view.setText(dateFormat.format(myCalendar.time))
+//    }
+//}
 
 @BindingAdapter("android:qtyCart")
 fun tintButton(v:ImageView,qtyCart:Int) {

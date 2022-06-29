@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -110,7 +111,7 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
             }
             val grandTotal = subTotal + deliveryFee + serviceFee
 
-            dataBinding.transaction = Transaction(userId, restaurantId, "", "", deliveryFee, serviceFee, subTotal, grandTotal, "Ongoing", null,"")
+            dataBinding.transaction = Transaction(userId, restaurantId, "", "", "", deliveryFee, serviceFee, subTotal, grandTotal, "Ongoing", null,"")
 
 //            textDetailOrderSubtotal.text = String.format("Rp%,d", subTotal)
 //            textDetailOrderDeliveryFee.text = String.format("Rp%,d", deliveryFee)
@@ -168,7 +169,7 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
         }
     }
 
-    override fun onButtonPlaceOrderClick(v: View, addressUser: TextInputEditText) {
+    override fun onButtonPlaceOrderClick(v: View, addressUser: TextInputEditText, spinnerPayment: Spinner) {
         if (dataBinding.transaction!!.location.isNotEmpty()) {
             val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
             val currentDate = sdf.format(Date())
@@ -177,6 +178,7 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
 
             dataBinding.transaction!!.date = currentDate
             dataBinding.transaction!!.id = id
+            dataBinding.transaction!!.paymentMethod = spinnerPayment.selectedItem.toString()
 
             for (list in cartWithFood) {
                 detailTransaction.add(
@@ -208,7 +210,7 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
                 .build()
             WorkManager.getInstance(requireContext()).enqueue(workRequest)
 
-            val action = CheckoutFragmentDirections.actionListTransaction()
+            val action = CheckoutFragmentDirections.actionHome()
             Navigation.findNavController(v).navigate(action)
         }else{
             Toast.makeText(v.context, "Please fill your delivery address!", Toast.LENGTH_LONG).show()
