@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentDetailRestaurantBinding
-import com.ubaya.ubayakuliner_160419003_160419038.model.Cart
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.DetailRestaurantViewModel
 import kotlinx.android.synthetic.main.fragment_detail_restaurant.*
 
@@ -45,14 +43,6 @@ class DetailRestaurantFragment : Fragment(), ReviewRestaurantListener, OpenCartR
         viewModel.fetchFoodWithCart(restaurantId)
         viewModel.fetchRestaurant(restaurantId)
 
-//        cardReview.setOnClickListener {
-//            val action = DetailRestaurantFragmentDirections.actionListReviewFragment(restaurantId)
-//            Navigation.findNavController(it).navigate(action)
-//        }
-//        buttonCart.setOnClickListener {
-//            val action = DetailRestaurantFragmentDirections.actionItemCart()
-//            Navigation.findNavController(it).navigate(action)
-//        }
         recFoodView.layoutManager = LinearLayoutManager(context)
         recFoodView.adapter = cartWithFoodListAdapter
 
@@ -88,11 +78,6 @@ class DetailRestaurantFragment : Fragment(), ReviewRestaurantListener, OpenCartR
             if (it != null){
                 dataBinding.restaurant = it
                 textNoDataDetailResto.visibility = View.GONE
-//                textDetailRestoName.text = it.name
-//                textDetailRestoAddress.text = it.address
-//                textDetailRestoPhone.text = it.phoneNumber
-//                ratingBarReview.rating = it.ratingTotal ?: 0.0f
-//                textDetailRestoRating.text = "${it.ratingTotal ?: "New"} (See Reviews)"
             }else {
                 textNoDataDetailResto.visibility = View.VISIBLE
             }

@@ -12,10 +12,6 @@ interface ButtonRateClickListener {
     fun onButtonRateClick(v:View,trans:Transaction)
 }
 
-interface ButtonCompleteClickListener {
-    fun onButtonCompleteClick(v: View,transId: String)
-}
-
 interface TransactionCardClickListener{
     fun onCardClick(v:View, restoName:String, transId: String)
 }
@@ -40,10 +36,6 @@ interface ButtonDecreaseFICListener {
     fun onButtonDecreaseCLick(v: View, btnIncrease: ImageView, quantity: TextView, obj: CartWithFood)
 }
 
-//interface SpinnerGenderClickListener{
-//    fun onSpinnerClick(parent:AdapterView<*>, v:View,position:Int,id:Int)
-//}
-
 interface ButtonAddCartListener {
     fun onButtonAddCartCLick(v: View, cardQty: CardView, obj: FoodWithCart)
 }
@@ -67,10 +59,6 @@ interface CheckoutListener {
 interface PlaceOrderListener {
     fun onButtonPlaceOrderClick(v: View, addressUser: TextInputEditText, spinnerPayment:Spinner)
 }
-//
-//interface SpinnerPaymentListener{
-//    fun onSpinnerClick(parent:AdapterView<*>, v:View, position:Int, id:Int)
-//}
 
 interface ReviewRestaurantListener {
     fun onCardReviewClick(v: View)

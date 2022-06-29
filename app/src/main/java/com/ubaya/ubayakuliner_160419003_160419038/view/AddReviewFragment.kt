@@ -1,7 +1,6 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +9,8 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentAddReviewBinding
 import com.ubaya.ubayakuliner_160419003_160419038.model.Review
-import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListReviewViewModel
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListTransactionViewModel
 import kotlinx.android.synthetic.main.fragment_add_review.*
@@ -60,19 +57,6 @@ class AddReviewFragment : Fragment(), SubmitReviewListener,RatingBarListener {
 
             dataBinding.transactionWithRestaurant = it
             dataBinding.review = Review(it.restaurant.id, it.transaction.id, it.transaction.userId, 0f, "", currentDate)
-
-//            textReviewNameRestaurant.text = restaurant.name
-//            imageReviewRestoPhoto.loadImage(
-//                "https://hendri-27.github.io/ubayakuliner_db/images"+restaurant.photoURL,progressLoadingReviewRestoPhoto
-//            )
-
-//            ratingBarAddReview.setOnRatingBarChangeListener { ratingBar, fl, b ->
-//                buttonSubmit.isEnabled = true
-//            }
-
-//            buttonSubmit.setOnClickListener{
-//                viewModelReview.insert(dataBinding.review)
-//            }
         }
 
         viewModelTransaction.transactionForReviewloadingLiveData.observe(viewLifecycleOwner){

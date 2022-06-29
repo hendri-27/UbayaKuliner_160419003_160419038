@@ -1,13 +1,10 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
 import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentProfileBinding
 import com.ubaya.ubayakuliner_160419003_160419038.util.arrGender
-import com.ubaya.ubayakuliner_160419003_160419038.util.loadImage
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_detail_restaurant.*
 import kotlinx.android.synthetic.main.fragment_profile.*

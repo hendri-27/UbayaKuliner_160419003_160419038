@@ -62,7 +62,6 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
         restaurantId = CheckoutFragmentArgs.fromBundle(requireArguments()).restaurantId
 
         dataBinding.placeOrderListener = this
-//        dataBinding.spinnerListener = this
 
         viewModelCheckout = ViewModelProvider(this).get(CheckoutViewModel::class.java)
         viewModelCheckout.fetchUser()
@@ -83,8 +82,6 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
     private fun observeViewModel(){
         viewModelCheckout.userLiveData.observe(viewLifecycleOwner) {
             dataBinding.user = it
-//            editCheckoutPhone.setText(it.phoneNumber)
-//            editCheckoutRecipientName.setText(it.name)
         }
         viewModelCheckout.userLoadErrorLiveData.observe(viewLifecycleOwner){
             textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE
@@ -113,26 +110,6 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
 
             dataBinding.transaction = Transaction(userId, restaurantId, "", "", "", deliveryFee, serviceFee, subTotal, grandTotal, "Ongoing", null,"")
 
-//            textDetailOrderSubtotal.text = String.format("Rp%,d", subTotal)
-//            textDetailOrderDeliveryFee.text = String.format("Rp%,d", deliveryFee)
-//            textDetailOrderServiceFee.text = String.format("Rp%,d", serviceFee)
-//            textDetailTransGrandtotal.text = String.format("Rp%,d", grandTotal)
-//            textOrderGrandtotal.text = String.format("Rp%,d", grandTotal)
-
-//            buttonPlaceOrder.setOnClickListener{
-//                val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
-//                val currentDate = sdf.format(Date())
-//                val id = UUID.randomUUID().toString().replace("-", "").uppercase()
-//                val transaction = Transaction(userId, restaurantId, currentDate, editDeliveryAddress.text.toString(),
-//                    deliveryFee, serviceFee, subTotal, grandTotal, "Ongoing", null, id)
-//                var detailTransaction: ArrayList<DetailTransaction> = arrayListOf()
-//
-//                for(list in cartWithFood) {
-//                    detailTransaction.add(DetailTransaction(id, list.food.id, list.cart.qty, list.food.price))
-//                }
-//
-//                viewModelCheckout.placeOrder(transaction, detailTransaction)
-//            }
         }
         viewModelCart.cartLoadErrorLiveData.observe(viewLifecycleOwner){
             textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE
@@ -151,7 +128,6 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
 
         viewModelCheckout.restaurantLiveData.observe(viewLifecycleOwner) {
             dataBinding.restaurant = it
-//            textCheckoutRestoName.text = it.name
         }
         viewModelCheckout.restaurantLoadErrorLiveData.observe(viewLifecycleOwner){
             textErrorCheckout.visibility = if (it) View.VISIBLE else View.GONE
@@ -216,8 +192,4 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
             Toast.makeText(v.context, "Please fill your delivery address!", Toast.LENGTH_LONG).show()
         }
     }
-
-//    override fun onSpinnerClick(parent: AdapterView<*>, v: View, position: Int, id: Int) {
-//        parent.setSelection(position)
-//    }
 }

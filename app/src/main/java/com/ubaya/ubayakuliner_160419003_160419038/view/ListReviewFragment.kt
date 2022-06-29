@@ -11,8 +11,6 @@ import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListReviewViewModel
 import kotlinx.android.synthetic.main.fragment_list_review.*
 
-//import kotlinx.android.synthetic.main.fragment_list_restaurant.*
-
 /**
  * A simple [Fragment] subclass.
  * Use the [ListReviewFragment.newInstance] factory method to

@@ -1,7 +1,6 @@
 package com.ubaya.ubayakuliner_160419003_160419038.model
 
 import androidx.room.*
-import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "detail_transaction",
     primaryKeys = ["transaction_id","food_id"],

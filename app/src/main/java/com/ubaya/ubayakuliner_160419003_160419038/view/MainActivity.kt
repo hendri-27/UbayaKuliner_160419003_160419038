@@ -2,8 +2,6 @@ package com.ubaya.ubayakuliner_160419003_160419038.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -13,9 +11,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.util.DatabaseInit
-import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.DetailRestaurantViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_list_restaurant.*
 
 
 class MainActivity : AppCompatActivity() {

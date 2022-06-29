@@ -1,7 +1,6 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubaya.ubayakuliner_160419003_160419038.R
-import com.ubaya.ubayakuliner_160419003_160419038.util.userId
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListTransactionViewModel
 import kotlinx.android.synthetic.main.fragment_list_transaction.*
 import kotlinx.android.synthetic.main.fragment_list_transaction.refreshLayout

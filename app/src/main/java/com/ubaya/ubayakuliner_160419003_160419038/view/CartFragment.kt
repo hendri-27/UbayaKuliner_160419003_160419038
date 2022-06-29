@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentCartBinding
-import com.ubaya.ubayakuliner_160419003_160419038.util.userId
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.ListCartViewModel
 import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.refreshLayout
@@ -75,10 +73,6 @@ class CartFragment : Fragment(), CheckoutListener{
                 cartListAdapter.setSubTotal(subTotal)
 
                 restaurantId = it[0].food.restaurantId
-//                buttonCartCheckout.setOnClickListener {
-//                    val action = CartFragmentDirections.actionCheckoutFragment(restaurantId)
-//                    Navigation.findNavController(it).navigate(action)
-//                }
             }else {
                 dataBinding.textNoDataListCart.visibility = View.VISIBLE
                 dataBinding.cardViewCheckout.visibility = View.GONE

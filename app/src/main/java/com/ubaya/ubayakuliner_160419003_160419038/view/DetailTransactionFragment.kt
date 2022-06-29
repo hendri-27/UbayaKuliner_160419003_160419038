@@ -1,6 +1,5 @@
 package com.ubaya.ubayakuliner_160419003_160419038.view
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ubaya.ubayakuliner_160419003_160419038.R
-import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentDetailRestaurantBinding
 import com.ubaya.ubayakuliner_160419003_160419038.databinding.FragmentDetailTransactionBinding
 import com.ubaya.ubayakuliner_160419003_160419038.viewmodel.DetailTransactionViewModel
 import kotlinx.android.synthetic.main.fragment_detail_restaurant.*
@@ -49,7 +46,6 @@ class DetailTransactionFragment : Fragment() {
         recViewDetailTrans.adapter = detailFoodListAdapter
 
         observeViewModel()
-
     }
 
     private fun observeViewModel(){
@@ -57,18 +53,6 @@ class DetailTransactionFragment : Fragment() {
             if (it.isNotEmpty()){
                 textNoDataDetailTransaction.visibility = View.GONE
                 dataBinding.transaction = it[0].transaction
-
-//                textDetailTransPaymentMethod.text = String.format("Rp%,d - %s", transaction.grandTotal, transaction.paymentMethod)
-//                textDetailTransPaymentMethod.text = String.format("Rp%,d", transaction.grandTotal)
-//                textDetailTransactionAddress.text = transaction.location
-//                textDetailTransSubtotal.text = String.format("Rp%,d",transaction.subtotal)
-//                textDetailTransDeliveryFee.text = String.format("Rp%,d",transaction.deliveryFee)
-//                textDetailTransServiceFee.text = String.format("Rp%,d",transaction.serviceFee)
-//                textDetailTransGrandtotal.text = String.format("Rp%,d",transaction.grandTotal)
-//                textDetailTransactionID.text = transaction.id
-//                textDetailTransactionDate.text = transaction.date
-//                textDetailTransactionMethodPayment.text = transaction.paymentMethod
-
                 detailFoodListAdapter.updateListDetailTransaction(it)
             }else {
                 textNoDataDetailTransaction.visibility = View.VISIBLE

@@ -1,14 +1,8 @@
 package com.ubaya.ubayakuliner_160419003_160419038.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
 import com.ubaya.ubayakuliner_160419003_160419038.model.User
 import com.ubaya.ubayakuliner_160419003_160419038.util.buildDb
 import com.ubaya.ubayakuliner_160419003_160419038.util.userId

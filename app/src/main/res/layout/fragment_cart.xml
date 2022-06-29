@@ -4,12 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
-
-        <variable
-            name="cartWithFood"
-            type="com.ubaya.ubayakuliner_160419003_160419038.model.CartWithFood" />
-        
         <variable
             name="checkoutListener"
             type="com.ubaya.ubayakuliner_160419003_160419038.view.CheckoutListener" />
