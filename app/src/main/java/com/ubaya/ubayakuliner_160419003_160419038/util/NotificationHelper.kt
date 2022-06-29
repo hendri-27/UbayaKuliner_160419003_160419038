@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.ubaya.ubayakuliner_160419003_160419038.R
 import com.ubaya.ubayakuliner_160419003_160419038.view.MainActivity
 
 class NotificationHelper(val context: Context) {
@@ -37,7 +38,7 @@ class NotificationHelper(val context: Context) {
 //        val icon = BitmapFactory.decodeResource(context.resources, R.drawable.todochar)
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-//            .setSmallIcon(R.drawable.checklist)
+            .setSmallIcon(R.drawable.ic_baseline_delivery_dining_24)
 //            .setLargeIcon(icon)
             .setContentTitle(title)
             .setContentText(message)

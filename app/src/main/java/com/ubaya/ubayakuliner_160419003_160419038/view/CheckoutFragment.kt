@@ -190,6 +190,7 @@ class CheckoutFragment : Fragment(), PlaceOrderListener{
             }
 
             viewModelCheckout.placeOrder(dataBinding.transaction!!, detailTransaction)
+            viewModelCart.delete()
 
             // For Notification
             val deliveryDuration = Random.nextInt(10, 15).toLong()

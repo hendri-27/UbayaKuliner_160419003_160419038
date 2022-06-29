@@ -63,6 +63,7 @@ class CartFragment : Fragment(), CheckoutListener{
         viewModel.cartLiveData.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()){
                 textNoDataListCart.visibility = View.GONE
+                dataBinding.cardViewCheckout.visibility = View.VISIBLE
                 cartListAdapter.updateListFood(it)
 
                 var subTotal = 0
@@ -80,6 +81,7 @@ class CartFragment : Fragment(), CheckoutListener{
 //                }
             }else {
                 dataBinding.textNoDataListCart.visibility = View.VISIBLE
+                dataBinding.cardViewCheckout.visibility = View.GONE
             }
         }
         viewModel.cartLoadErrorLiveData.observe(viewLifecycleOwner){

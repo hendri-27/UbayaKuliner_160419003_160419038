@@ -56,4 +56,11 @@ class ListCartViewModel(application: Application) : AndroidViewModel(application
             cartLiveData.value = ArrayList(db.cartDao().select(userId))
         }
     }
+
+    fun delete() {
+        launch {
+            val db = buildDb(getApplication())
+            db.cartDao().delete(userId)
+        }
+    }
 }

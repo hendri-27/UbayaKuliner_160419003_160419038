@@ -127,7 +127,7 @@
                             android:id="@+id/buttonIncreaseFIC"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:onClick="@{(view) -> increaseListener.onButtonIncreaseCLick(view, textQtyCartFoodCounter, cartWithFood)}"
+                            android:onClick="@{(view) -> increaseListener.onButtonIncreaseCLick(view, cartWithFood)}"
                             app:srcCompat="@drawable/ic_baseline_add_box_24"
                             app:tint="#DC5959" />
                     </LinearLayout>

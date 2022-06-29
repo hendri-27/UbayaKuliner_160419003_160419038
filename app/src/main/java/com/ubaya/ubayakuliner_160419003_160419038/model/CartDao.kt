@@ -17,4 +17,7 @@ interface CartDao {
 
     @Delete
     suspend fun delete(cart: Cart)
+
+    @Query("DELETE FROM cart WHERE user_id = :user_id")
+    suspend fun delete(user_id: Int)
 }

@@ -36,7 +36,7 @@ interface CalendarClickListener{
 }
 
 interface ButtonIncreaseFICListener {
-    fun onButtonIncreaseCLick(v: View, quantity: TextView, obj: CartWithFood)
+    fun onButtonIncreaseCLick(v: View, obj: CartWithFood)
 }
 
 interface ButtonDecreaseFICListener {

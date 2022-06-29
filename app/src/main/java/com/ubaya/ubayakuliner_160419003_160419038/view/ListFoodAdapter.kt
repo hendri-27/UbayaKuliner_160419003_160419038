@@ -149,7 +149,7 @@ class ListFoodAdapter(val listFoodWithCart:ArrayList<FoodWithCart>, val parentVi
         if (obj.cart!!.qty < 200){
             obj.cart!!.qty += 1
             updateCart(obj.food.id, obj.cart!!.qty)
-            if (obj.cart!!.qty + 1 >= 199 ){
+            if (obj.cart!!.qty + 1 >= 200 ){
                 btnIncrease.isEnabled = false
                 btnIncrease.setColorFilter(
                     ContextCompat.getColor(v.context, android.R.color.darker_gray),

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.ubaya.ubayakuliner_160419003_160419038.R
@@ -114,39 +115,58 @@ class ListCartAdapter(val listCartWithFood:ArrayList<CartWithFood>, val parentVi
         notifyDataSetChanged()
     }
 
-    override fun onButtonIncreaseCLick(v: View, quantity: TextView, obj: CartWithFood) {
-        val qty = Integer.parseInt(quantity.text.toString()) + 1
-
-        if (v.isEnabled){
+    override fun onButtonIncreaseCLick(v: View, obj: CartWithFood) {
+        if (obj.cart!!.qty < 200) {
+            obj.cart!!.qty += 1
+            viewModel.update(obj.food.id, obj.cart.qty)
             subTotal += obj.food.price
             parentView.textCartSubtotal.text = String.format("Rp%,d", subTotal)
-            viewModel.update(obj.food.id, qty)
-            obj.cart.qty = qty
+            notifyDataSetChanged()
+
+            if (obj.cart!!.qty + 1 >= 200 ){
+                v.isEnabled = false
+                (v as ImageView).setColorFilter(
+                    ContextCompat.getColor(v.context, android.R.color.darker_gray),
+                    PorterDuff.Mode.MULTIPLY)
+            }
         }
     }
 
     override fun onButtonDecreaseCLick(v: View, btnIncrease: ImageView, quantity: TextView, obj: CartWithFood) {
-        val qty = Integer.parseInt(quantity.text.toString()) - 1
-
-        if (qty <= 0){
-            viewModel.delete(obj.cart)
-            notifyDataSetChanged()
-
-            if (itemCount == 0){
-                parentView.textNoDataListCart.visibility = View.VISIBLE
-                parentView.cardViewCheckout.visibility = View.GONE
-            }
-        } else {
-            viewModel.update(obj.food.id, qty)
-            obj.cart.qty = qty
-
+        if (obj.cart!!.qty - 1 > 0){
+            obj.cart!!.qty -= 1
+            viewModel.update(obj.food.id, obj.cart!!.qty)
             if (!btnIncrease.isEnabled){
                 btnIncrease.isEnabled = true
                 btnIncrease.setColorFilter(
                     Color.parseColor("#DC5959"),
                     PorterDuff.Mode.MULTIPLY)
             }
+        }else{
+            val deletedCart = obj.cart!!.copy()
+            listCartWithFood.remove(obj)
+            viewModel.delete(deletedCart)
+            notifyDataSetChanged()
         }
+//        if (qty <= 0){
+//            viewModel.delete(obj.cart)
+//            notifyDataSetChanged()
+//
+//            if (itemCount == 0){
+//                parentView.textNoDataListCart.visibility = View.VISIBLE
+//                parentView.cardViewCheckout.visibility = View.GONE
+//            }
+//        } else {
+//            viewModel.update(obj.food.id, qty)
+//            obj.cart.qty = qty
+//
+//            if (!btnIncrease.isEnabled){
+//                btnIncrease.isEnabled = true
+//                btnIncrease.setColorFilter(
+//                    Color.parseColor("#DC5959"),
+//                    PorterDuff.Mode.MULTIPLY)
+//            }
+//        }
         subTotal -= obj.food.price
         parentView.textCartSubtotal.text = String.format("Rp%,d", subTotal)
     }
